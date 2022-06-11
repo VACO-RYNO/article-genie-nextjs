@@ -1,8 +1,11 @@
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import useModal from "../../lib/hooks/useModal";
+import { isLoginState } from "../../lib/recoil/auth";
 
 function AppHeader() {
+  const isLogin = useRecoilValue(isLoginState);
   const { showModal } = useModal();
 
   const handleLoginClick = () => {
