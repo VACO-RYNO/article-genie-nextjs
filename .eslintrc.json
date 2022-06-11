@@ -24,7 +24,8 @@
     "no-console": "off",
     "func-names": "off",
     "no-shadow": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "no-plusplus": "off"
   },
   "settings": {
     "import/resolver": {
