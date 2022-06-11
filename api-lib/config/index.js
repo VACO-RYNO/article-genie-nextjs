@@ -1,4 +1,4 @@
 module.exports = {
-  DATABASE_URL: process.env.NEXT_PUBLIC.MONGODB_URI,
-  JWT_SECRET: process.env.NEXT_PUBLIC.JWT_SECRET,
+  DATABASE_URL: process.env.NEXT_PUBLIC_MONGODB_URI,
+  JWT_SECRET: process.env.NEXT_PUBLIC_JWT_SECRET,
 };
