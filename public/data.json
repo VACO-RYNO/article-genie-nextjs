@@ -1,0 +1,19 @@
+{
+  "sites": [
+    {
+      "name": "Stack Overflow",
+      "originUrl": "https://stackoverflow.com/",
+      "logoUrl": ""
+    },
+    {
+      "name": "React",
+      "originUrl": "https://reactjs.org/",
+      "logoUrl": ""
+    },
+    {
+      "name": "MDN Web Docs",
+      "originUrl": "https://developer.mozilla.org/en-US/",
+      "logoUrl": ""
+    }
+  ]
+}
