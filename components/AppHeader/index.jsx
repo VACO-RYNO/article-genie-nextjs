@@ -1,9 +1,21 @@
 import styled from "styled-components";
 
-import Heading from "../shared/Heading";
+import useModal from "../../lib/hooks/useModal";
 
 function AppHeader() {
-  return <Header>Header!</Header>;
+  const { showModal } = useModal();
+
+  const handleLoginClick = () => {
+    showModal({
+      modalType: "LoginModal",
+    });
+  };
+
+  return (
+    <Header>
+      Header! <LoginButton onClick={handleLoginClick}>Login</LoginButton>
+    </Header>
+  );
 }
 
 const Header = styled.header`
