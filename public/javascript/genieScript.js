@@ -51,7 +51,6 @@ genieModeLinkButton.addEventListener("click", async () => {
 
     alert("링크 복사됨.");
   } catch (error) {
-    console.log(error);
     alert("복사 실패!");
   }
 
