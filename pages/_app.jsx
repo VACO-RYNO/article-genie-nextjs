@@ -5,18 +5,23 @@ import PropTypes from "prop-types";
 import AppHeader from "../components/AppHeader";
 import Container from "../components/shared/Container";
 import GlobalModal from "../components/GlobalModal";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 function MyApp({ Component, pageProps }) {
+  const queryClient = new QueryClient();
+
   return (
     <>
       <RecoilRoot>
-        <GlobalModal />
-        <AppHeader />
-        <Main>
-          <Container>
-            <Component {...pageProps} />
-          </Container>
-        </Main>
+        <QueryClientProvider client={queryClient}>
+          <GlobalModal />
+          <AppHeader />
+          <Main>
+            <Container>
+              <Component {...pageProps} />
+            </Container>
+          </Main>
+        </QueryClientProvider>
       </RecoilRoot>
     </>
   );
