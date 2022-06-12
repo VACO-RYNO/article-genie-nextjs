@@ -73,7 +73,8 @@ function AppHeader() {
   );
 }
 
-const Header = styled.header`
+const Header = styled.div`
+  z-index: 1000;
   position: fixed;
   display: flex;
   align-items: center;

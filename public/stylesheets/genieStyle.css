@@ -1,3 +1,7 @@
+header {
+  top: 67px !important;
+}
+
 .highlight {
   background-color: #fcddec;
   border-radius: 5px;

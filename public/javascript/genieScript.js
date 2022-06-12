@@ -12,7 +12,7 @@ if (location.hash) {
   );
 
   window.scrollTo({
-    top: target.offsetTop - 20,
+    top: target.offsetTop - 100,
     behavior: "smooth",
   });
 
@@ -44,8 +44,8 @@ window.addEventListener("mousemove", e => {
 genieModeLinkButton.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(
-      `${window.location.origin}${
-        window.location.pathname
+      `${window.location.origin}${window.location.pathname}${
+        window.location.search
       }#genie-id-${genieTag.getAttribute("genie-id")}`,
     );
 
@@ -58,13 +58,12 @@ genieModeLinkButton.addEventListener("click", async () => {
 });
 
 window.addEventListener("hashchange", () => {
-  console.log("!");
   const target = document.querySelector(
     `[genie-id="${location.hash.split("-")[2]}"]`,
   );
 
   window.scrollTo({
-    top: target.offsetTop - 20,
+    top: target.offsetTop - 100,
     behavior: "smooth",
   });
 
@@ -77,8 +76,4 @@ window.addEventListener("hashchange", () => {
 
   target.classList.add("focus");
   previousHash = location.hash;
-});
-
-window.addEventListener("message", e => {
-  console.log(e.data);
 });
