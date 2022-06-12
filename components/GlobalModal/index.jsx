@@ -1,4 +1,4 @@
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
 import modalState from "../../lib/recoil/modal";
 import Modal from "../Modal";
@@ -8,7 +8,7 @@ import ProfileModal from "../ProfileModal";
 import Profile from "../Profile";
 
 function GlobalModal() {
-  const { modalType, modalProps } = useRecoilState(modalState)[0] || {};
+  const { modalType, modalProps } = useRecoilValue(modalState) || {};
 
   switch (modalType) {
     case "LoginModal":
