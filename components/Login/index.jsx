@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSetRecoilState } from "recoil";
+import { setCookies } from "cookies-next";
 import GoogleLogin from "react-google-login";
 import styled from "styled-components";
 import { IoMdClose } from "react-icons/io";
@@ -34,10 +35,7 @@ function Login() {
     const { data } = await login({ name, email, profileImageUrl: imageUrl });
 
     setLoginState(data);
-
-    if (typeof window !== "undefined") {
-      localStorage.setItem("loginData", JSON.stringify(data));
-    }
+    setCookies("loginData", JSON.stringify(data));
 
     hideModal();
   };
