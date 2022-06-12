@@ -1,8 +1,14 @@
+import { useRouter } from "next/router";
+
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
 function SiteListEntry({ name, originUrl, logoUrl }) {
-  const handleSubmit = () => {};
+  const router = useRouter();
+
+  const handleSubmit = () => {
+    return router.push(`/genie-mode/?url=${originUrl}`);
+  };
 
   return (
     <EntryWrapper onClick={handleSubmit}>
@@ -21,6 +27,10 @@ SiteListEntry.propTypes = {
 
 const EntryWrapper = styled.div`
   margin: 10px;
+
+  :hover {
+    background-color: #aaabff;
+  }
 `;
 
 export default SiteListEntry;

@@ -4,9 +4,10 @@ import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 
 import styled from "styled-components";
-import { BsPersonCircle } from "react-icons/bs";
-import logo from "../../public/images/genie-logo.png";
 import Heading from "../shared/Heading";
+import logo from "../../public/images/genie-logo.png";
+import { BsPersonCircle } from "react-icons/bs";
+import { BsShareFill } from "react-icons/bs";
 
 import useModal from "../../lib/hooks/useModal";
 import { isLoginState } from "../../lib/recoil/auth";
@@ -29,12 +30,7 @@ function AppHeader() {
   };
 
   const handleShareButtonClick = async () => {
-    if (!isLogin) {
-      handleLoginClick();
-      return;
-    }
-
-    await navigator.clipboard.wirteText(window.location.href);
+    await navigator.clipboard.writeText(window.location.href);
 
     showModal({
       modalType: "ConfirmModal",
@@ -62,7 +58,10 @@ function AppHeader() {
           </a>
         </Link>
         {router.pathname.includes("genie-mode") && (
-          <Image alt="공유 버튼" onClick={handleShareButtonClick}></Image>
+          <ShareIcon
+            onClick={handleShareButtonClick}
+            isLogin={isLogin}
+          ></ShareIcon>
         )}
         {isLogin ? (
           <ProfileIcon onClick={handleProfileClick} />
@@ -131,6 +130,18 @@ const ProfileIcon = styled(BsPersonCircle)`
   width: 40px;
   height: 40px;
   color: #bcbcbc;
+`;
+
+const ShareIcon = styled(BsShareFill)`
+  position: absolute;
+  ${props => (props.isLogin ? "right: 90px;" : "right: 150px;")}
+  width: 28px;
+  height: 28px;
+  color: #bcbcbc;
+
+  :hover {
+    color: #6466ff;
+  }
 `;
 
 export default AppHeader;

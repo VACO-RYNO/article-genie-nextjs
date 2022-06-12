@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import modalState from "../../lib/recoil/modal";
 import Modal from "../Modal";
 import Login from "../Login";
-import ErrorModal from "../ErrorModal";
+import ConfirmModal from "../ConfirmModal";
 
 function GlobalModal() {
   const { modalType, modalProps } = useRecoilState(modalState)[0] || {};
@@ -21,11 +21,11 @@ function GlobalModal() {
   }
 
   if (modalType === "ConfirmModal") {
-    return <Modal>{modalProps.message}</Modal>;
+    return <ConfirmModal>{modalProps.message}</ConfirmModal>;
   }
 
   if (modalType === "UrlInvalidModal") {
-    return <ErrorModal>{modalProps.message}</ErrorModal>;
+    return <ConfirmModal>{modalProps.message}</ConfirmModal>;
   }
 
   return <></>;
