@@ -3,19 +3,24 @@ import cheerio from "cheerio";
 import Head from "next/head";
 import parse from "html-react-parser";
 
+import styled from "styled-components";
+import Script from "next/script";
+
 export default function GenieModePage({ headString, htmlString }) {
   const parseHeadJsx = parse(headString);
 
   return (
     <>
-      <Head>{parseHeadJsx}</Head>
-      <iframe
-        width="100%"
-        height="1000px"
-        srcDoc={htmlString}
-        sandbox="allow-scripts allow-modals allow-top-navigation"
-        allow="clipboard-read; clipboard-write"
-      />
+      <Head>
+        {parseHeadJsx}
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="/stylesheets/genieStyle.css"
+        />
+      </Head>
+      <HtmlContainer dangerouslySetInnerHTML={{ __html: htmlString }} />
+      <Script src="/javascript/genieScript.js" />
     </>
   );
 }
@@ -23,7 +28,7 @@ export default function GenieModePage({ headString, htmlString }) {
 export async function getServerSideProps(context) {
   const { url } = context.query;
 
-  if (!url) return { props: { htmlString: null } };
+  if (!url) return { props: { headString: null, htmlString: null } };
 
   const { data } = await axios.get(url);
   const $ = cheerio.load(data);
@@ -35,9 +40,6 @@ export async function getServerSideProps(context) {
     id++;
   });
 
-  $("head").append(`
-  <link rel="stylesheet" type="text/css" href="/api/static/genie-style"/>`);
-
   $("body").append(
     `<div id="genie-hover-modal">
       <button class="modal-button" id="genie-mode-link">링크 생성</button>
@@ -47,9 +49,12 @@ export async function getServerSideProps(context) {
    `,
   );
 
-  $("body").append(`<script src="/api/static/genie-script"/>`);
-
   return {
     props: { headString: $("head").html(), htmlString: $.html() },
   };
 }
+
+const HtmlContainer = styled.div`
+  position: relative;
+  padding-top: 67px;
+`;
