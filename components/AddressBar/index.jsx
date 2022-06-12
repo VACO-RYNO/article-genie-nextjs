@@ -33,7 +33,7 @@ function AddressBar() {
 
     if (!validURL(searchInput)) {
       showModal({
-        modalType: "UrlInvalidModal",
+        modalType: "ConfirmModal",
         modalProps: {
           message: "올바른 URL 을 입력해주세요.",
         },

@@ -4,14 +4,15 @@ import { IoMdClose } from "react-icons/io";
 
 import useModal from "../../lib/hooks/useModal";
 
-export default function Modal({ children }) {
+export default function ConfirmModal({ children }) {
   const { hideModal } = useModal();
 
   return ReactDom.createPortal(
     <ModalOverlay onClick={hideModal}>
       <ModalContainer onClick={e => e.stopPropagation()}>
         <CloseButton onClick={hideModal} />
-        {children}
+        <ModalMessage>{children}</ModalMessage>
+        <ConfirmButton onClick={hideModal}>확인</ConfirmButton>
       </ModalContainer>
     </ModalOverlay>,
     document.getElementById("portal"),
@@ -37,8 +38,6 @@ const ModalContainer = styled.div`
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
   background-color: #fff;
   box-shadow: 0px 8px 30px;
   border-radius: 20px;
@@ -51,4 +50,25 @@ const CloseButton = styled(IoMdClose)`
   left: 90.6%;
   width: 20px;
   height: 20px;
+  cursor: pointer;
+`;
+
+const Button = styled.button`
+  width: 82px;
+  height: 30px;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
+const ModalMessage = styled.p`
+  margin: 120px auto 60px;
+  color: #6466ff;
+  font-size: 25px;
+`;
+
+const ConfirmButton = styled(Button)`
+  margin: 50px auto;
+  border: 1px solid #6466ff;
+  background: #6466ff;
+  color: white;
 `;

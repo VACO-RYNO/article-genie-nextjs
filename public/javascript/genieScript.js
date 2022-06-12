@@ -48,10 +48,8 @@ genieModeLinkButton.addEventListener("click", async () => {
         window.location.search
       }#genie-id-${genieTag.getAttribute("genie-id")}`,
     );
-
-    alert("링크 복사됨.");
   } catch (error) {
-    alert("복사 실패!");
+    alert("오류가 발생하였습니다. 잠시 후 다시 시도해주세요.");
   }
 
   hoverModal.classList.remove("show");

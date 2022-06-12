@@ -42,7 +42,7 @@ function AppHeader() {
     showModal({
       modalType: "ConfirmModal",
       modalProps: {
-        message: "링크가 복사되었습니다.",
+        message: "페이지 URL이 복사되었습니다.",
       },
     });
   };

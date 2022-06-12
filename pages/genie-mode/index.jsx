@@ -1,13 +1,38 @@
 import axios from "axios";
 import cheerio from "cheerio";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import parse from "html-react-parser";
 
 import styled from "styled-components";
 import Script from "next/script";
 
+import useModal from "../../lib/hooks/useModal";
+
 export default function GenieModePage({ headString, htmlString }) {
+  const [isSSR, setIsSSR] = useState(true);
+
+  useEffect(() => {
+    setIsSSR(false);
+  }, []);
+
+  const { showModal } = useModal();
   const parseHeadJsx = parse(headString);
+
+  const handleLinkButtonClick = () => {
+    showModal({
+      modalType: "ConfirmModal",
+      modalProps: {
+        message: "링크가 클립보드에 복사되었습니다.",
+      },
+    });
+  };
+
+  if (!isSSR) {
+    const genieModeLinkButton = document.getElementById("genie-mode-link");
+
+    genieModeLinkButton.addEventListener("click", handleLinkButtonClick);
+  }
 
   return (
     <>
