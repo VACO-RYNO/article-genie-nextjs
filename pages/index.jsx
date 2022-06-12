@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { useRecoilValue } from "recoil";
@@ -12,6 +13,11 @@ import { isLoginState } from "../lib/recoil/auth";
 
 export default function MainPage() {
   const isLogin = useRecoilValue(isLoginState);
+  const [isSSR, setIsSSR] = useState(true);
+
+  useEffect(() => {
+    setIsSSR(false);
+  }, []);
 
   return (
     <>
@@ -22,7 +28,7 @@ export default function MainPage() {
       </Head>
       <Wrapper>
         <AddressBar />
-        {isLogin ? <RecentlyViewedSites /> : <RecommendedSites />}
+        {!isSSR && isLogin ? <RecentlyViewedSites /> : <RecommendedSites />}
       </Wrapper>
     </>
   );

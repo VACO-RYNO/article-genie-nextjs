@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -13,6 +14,12 @@ import useModal from "../../lib/hooks/useModal";
 import { isLoginState } from "../../lib/recoil/auth";
 
 function AppHeader() {
+  const [isSSR, setIsSSR] = useState(true);
+
+  useEffect(() => {
+    setIsSSR(false);
+  }, []);
+
   const { showModal } = useModal();
   const isLogin = useRecoilValue(isLoginState);
   const router = useRouter();
@@ -63,7 +70,7 @@ function AppHeader() {
             isLogin={isLogin}
           ></ShareIcon>
         )}
-        {isLogin ? (
+        {!isSSR && isLogin ? (
           <ProfileIcon onClick={handleProfileClick} />
         ) : (
           <LoginButton onClick={handleLoginClick}>Login</LoginButton>
