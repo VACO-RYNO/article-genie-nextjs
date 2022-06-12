@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 
 import styled from "styled-components";
@@ -13,6 +14,7 @@ import { isLoginState } from "../../lib/recoil/auth";
 function AppHeader() {
   const { showModal } = useModal();
   const isLogin = useRecoilValue(isLoginState);
+  const router = useRouter();
 
   const handleProfileClick = () => {
     showModal({
@@ -32,7 +34,7 @@ function AppHeader() {
       return;
     }
 
-    await navigator.clipboard.wirteText(window.locatin.href);
+    await navigator.clipboard.wirteText(window.location.href);
 
     showModal({
       modalType: "ConfirmModal",
@@ -59,10 +61,9 @@ function AppHeader() {
             </Brand>
           </a>
         </Link>
-        {typeof window !== "undefined" &&
-          window.location.pathname.includes("genie-mode") && (
-            <Image alt="공유 버튼" onClick={handleShareButtonClick}></Image>
-          )}
+        {router.pathname.includes("genie-mode") && (
+          <Image alt="공유 버튼" onClick={handleShareButtonClick}></Image>
+        )}
         {isLogin ? (
           <ProfileIcon onClick={handleProfileClick} />
         ) : (
