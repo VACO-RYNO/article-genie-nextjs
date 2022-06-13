@@ -6,6 +6,8 @@ import Login from "../Login";
 import ConfirmModal from "../ConfirmModal";
 import ProfileModal from "../ProfileModal";
 import Profile from "../Profile";
+import MyArticlesModal from "../MyArticlesModal";
+import MyArticlesList from "../MyArticlesList";
 
 function GlobalModal() {
   const { modalType, modalProps } = useRecoilValue(modalState) || {};
@@ -23,7 +25,14 @@ function GlobalModal() {
           <Profile />
         </ProfileModal>
       );
+    case "MyArticlesModal":
+      return (
+        <MyArticlesModal>
+          <MyArticlesList />
+        </MyArticlesModal>
+      );
     case "ConfirmModal":
+    case "UrlInvalidModal":
       return <ConfirmModal>{modalProps.message}</ConfirmModal>;
   }
 }

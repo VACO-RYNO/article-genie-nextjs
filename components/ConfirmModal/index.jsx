@@ -26,7 +26,7 @@ const ModalOverlay = styled.div`
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 900;
+  z-index: 9999;
 `;
 
 const ModalContainer = styled.div`
@@ -41,7 +41,7 @@ const ModalContainer = styled.div`
   background-color: #fff;
   box-shadow: 0px 8px 30px;
   border-radius: 20px;
-  z-index: 1000;
+  z-index: 99999;
 `;
 
 const CloseButton = styled(IoMdClose)`

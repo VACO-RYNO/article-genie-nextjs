@@ -1,3 +1,5 @@
+import { useRecoilValue } from "recoil";
+
 import axios from "axios";
 import cheerio from "cheerio";
 import { useState, useEffect } from "react";
@@ -7,7 +9,11 @@ import parse from "html-react-parser";
 import styled from "styled-components";
 import Script from "next/script";
 
+import GenieSideBar from "../../components/GenieSideBar";
+import GenieCornerButton from "../../components/GenieCornerButton";
+
 import useModal from "../../lib/hooks/useModal";
+import { isSideBarState } from "../../lib/recoil/sideBar";
 
 export default function GenieModePage({ headString, htmlString }) {
   const [isSSR, setIsSSR] = useState(true);
@@ -17,6 +23,8 @@ export default function GenieModePage({ headString, htmlString }) {
   }, []);
 
   const { showModal } = useModal();
+  const isSideBarOpen = useRecoilValue(isSideBarState);
+
   const parseHeadJsx = parse(headString);
 
   const handleLinkButtonClick = () => {
@@ -35,18 +43,22 @@ export default function GenieModePage({ headString, htmlString }) {
   }
 
   return (
-    <>
-      <Head>
-        {parseHeadJsx}
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="/stylesheets/genieStyle.css"
-        />
-      </Head>
-      <HtmlContainer dangerouslySetInnerHTML={{ __html: htmlString }} />
-      <Script src="/javascript/genieScript.js" />
-    </>
+    <GeniePageWrapper>
+      <MainWrapper sideBar={isSideBarOpen}>
+        <Head>
+          {parseHeadJsx}
+          <link
+            rel="stylesheet"
+            type="text/css"
+            href="/stylesheets/genieStyle.css"
+          />
+        </Head>
+        <HtmlContainer dangerouslySetInnerHTML={{ __html: htmlString }} />
+        <Script src="/javascript/genieScript.js" />
+      </MainWrapper>
+      <GenieSideBar />
+      <GenieCornerButton />
+    </GeniePageWrapper>
   );
 }
 
@@ -78,6 +90,20 @@ export async function getServerSideProps(context) {
     props: { headString: $("head").html(), htmlString: $.html() },
   };
 }
+
+const GeniePageWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const MainWrapper = styled.div`
+  ${props => (props.sideBar ? "flex: 0 0 60%;" : "flex: 0 0 100%;")}
+  overflow: hidden;
+  overflow-y: scroll;
+  transition: all 200ms ease-in 0s;
+  display: flex;
+  flex-direction: column;
+`;
 
 const HtmlContainer = styled.div`
   position: relative;

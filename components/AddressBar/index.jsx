@@ -7,7 +7,7 @@ import { BsSearch } from "react-icons/bs";
 import useModal from "../../lib/hooks/useModal";
 
 function AddressBar() {
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState("https://");
 
   const { showModal } = useModal();
   const router = useRouter();
@@ -49,16 +49,17 @@ function AddressBar() {
   return (
     <Wrapper>
       <form onSubmit={handleSubmit}>
-        <SearchBarWrapper>
-          <SearchBar
+        <AddressBarWrapper>
+          <AddressBarInput
             type="text"
             value={searchInput}
             onChange={handleChange}
             placeholder="Enter a URL of the website."
+            inputValue={searchInput}
             required
           />
           <SearchIcon onClick={handleSubmit} />
-        </SearchBarWrapper>
+        </AddressBarWrapper>
       </form>
     </Wrapper>
   );
@@ -67,10 +68,10 @@ function AddressBar() {
 const Wrapper = styled.div`
   display: flex;
   justify-content: center;
-  margin: 30px;
+  margin: auto;
 `;
 
-const SearchBarWrapper = styled.div`
+const AddressBarWrapper = styled.div`
   display: flex;
   border: 1px solid #6466ff;
   border-radius: 40px;
@@ -79,10 +80,14 @@ const SearchBarWrapper = styled.div`
   padding: 2px 20px;
 `;
 
-const SearchBar = styled.input`
-  width: 800px;
+const AddressBarInput = styled.input`
+  width: 60vw;
   height: 45px;
   border: 0px solid white;
+  ${props =>
+    props.inputValue === "https://" || props.inputValue.length < 8
+      ? "color: #6d6e73;"
+      : "color: black;"}
 
   &:focus {
     outline: none;
