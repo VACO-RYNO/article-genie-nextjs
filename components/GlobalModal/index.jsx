@@ -32,7 +32,6 @@ function GlobalModal() {
         </MyArticlesModal>
       );
     case "ConfirmModal":
-    case "UrlInvalidModal":
       return <ConfirmModal>{modalProps.message}</ConfirmModal>;
   }
 }
