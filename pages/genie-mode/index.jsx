@@ -5,7 +5,6 @@ import cheerio from "cheerio";
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import parse from "html-react-parser";
-import cookies from "next-cookies";
 import styled from "styled-components";
 import Script from "next/script";
 
@@ -15,6 +14,7 @@ import GenieCornerButton from "../../components/GenieCornerButton";
 import useModal from "../../lib/hooks/useModal";
 import sideBarState from "../../lib/recoil/sideBar";
 import { createRecentSite } from "../../lib/api";
+import { getCookies } from "cookies-next";
 
 export default function GenieModePage({ headString, bodyString }) {
   const [isSSR, setIsSSR] = useState(true);
@@ -64,7 +64,8 @@ export default function GenieModePage({ headString, bodyString }) {
 
 export async function getServerSideProps(context) {
   const { url } = context.query;
-  const { loginData } = cookies(context);
+  let { loginData } = getCookies(context);
+  loginData = JSON.parse(loginData);
 
   if (!url) return { props: { headString: null, htmlString: null } };
 
