@@ -4,10 +4,8 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 function SiteListEntry({ name, originUrl, logoUrl }) {
-  const router = useRouter();
-
   const handleSubmit = () => {
-    return router.push(`/genie-mode/?url=${originUrl}`);
+    return (window.location.href = `/genie-mode/?url=${originUrl}`);
   };
 
   return (

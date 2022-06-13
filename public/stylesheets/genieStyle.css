@@ -2,6 +2,12 @@ body {
   padding-top: 67px;
 }
 
+.element-click {
+  background-color: #aaabff;
+  border-radius: 5px;
+  box-shadow: #aaabff 0px 0px 0px 2px;
+}
+
 .container {
   max-width: 1264px;
   width: 100%;
@@ -18,9 +24,9 @@ body {
 }
 
 .focus {
-  background-color: #fcddec;
+  background-color: #a5e9ff;
   border-radius: 5px;
-  box-shadow: #fcddec 0px 0px 0px 2px;
+  box-shadow: #a5e9ff 0px 0px 0px 2px;
 }
 
 .hover {

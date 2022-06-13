@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
-
 import styled from "styled-components";
 import { BsSearch } from "react-icons/bs";
 
@@ -8,26 +6,15 @@ import useModal from "../../lib/hooks/useModal";
 
 function AddressBar() {
   const [searchInput, setSearchInput] = useState("https://");
-
   const { showModal } = useModal();
-  const router = useRouter();
-
   const handleChange = e => setSearchInput(e.target.value);
-
   const validURL = str => {
-    const pattern = new RegExp(
-      "^(https?:\\/\\/)?" +
-        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" +
-        "((\\d{1,3}\\.){3}\\d{1,3}))" +
-        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" +
-        "(\\?[;&a-z\\d%_.~+=-]*)?" +
-        "(\\#[-a-z\\d_]*)?$",
-      "i",
+    var pattern = new RegExp(
+      "^(http|https|ftp)://([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&amp;%$-]+)*@)*((25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]).(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0).(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0).(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])|([a-zA-Z0-9-]+.)*[a-zA-Z0-9-]+.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(/($|[a-zA-Z0-9.,?'\\+&amp;%$#=~_-]+))*$",
     );
 
-    return !!pattern.test(str);
+    return pattern.test(str);
   };
-
   const handleSubmit = e => {
     e.preventDefault();
 
@@ -40,10 +27,10 @@ function AddressBar() {
       });
       setSearchInput("");
 
-      return router.push(`/`);
+      return;
     }
 
-    return router.push(`/genie-mode/?url=${searchInput}`);
+    return (window.location.href = `/genie-mode/?url=${searchInput}`);
   };
 
   return (
@@ -51,7 +38,8 @@ function AddressBar() {
       <form onSubmit={handleSubmit}>
         <AddressBarWrapper>
           <AddressBarInput
-            type="text"
+            type="url"
+            pattern="https://.*"
             value={searchInput}
             onChange={handleChange}
             placeholder="Enter a URL of the website."
@@ -81,9 +69,10 @@ const AddressBarWrapper = styled.div`
 `;
 
 const AddressBarInput = styled.input`
-  width: 60vw;
-  height: 45px;
-  border: 0px solid white;
+  width: 50vw;
+  height: 35px;
+  border: none !important;
+
   ${props =>
     props.inputValue === "https://" || props.inputValue.length < 8
       ? "color: #6d6e73;"
