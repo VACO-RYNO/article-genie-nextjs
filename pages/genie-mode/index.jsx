@@ -5,7 +5,7 @@ import cheerio from "cheerio";
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import parse from "html-react-parser";
-
+import cookies from "next-cookies";
 import styled from "styled-components";
 import Script from "next/script";
 
@@ -14,8 +14,9 @@ import GenieCornerButton from "../../components/GenieCornerButton";
 
 import useModal from "../../lib/hooks/useModal";
 import sideBarState from "../../lib/recoil/sideBar";
+import { createRecentSite } from "../../lib/api";
 
-export default function GenieModePage({ headString, htmlString }) {
+export default function GenieModePage({ headString, bodyString }) {
   const [isSSR, setIsSSR] = useState(true);
 
   useEffect(() => {
@@ -24,8 +25,7 @@ export default function GenieModePage({ headString, htmlString }) {
 
   const { showModal } = useModal();
   const isSideBarOpen = useRecoilValue(sideBarState);
-
-  const parseHeadJsx = parse(headString);
+  const parseHeadJsx = headString ? parse(headString) : "";
 
   const handleLinkButtonClick = () => {
     showModal({
@@ -53,7 +53,7 @@ export default function GenieModePage({ headString, htmlString }) {
             href="/stylesheets/genieStyle.css"
           />
         </Head>
-        <HtmlContainer dangerouslySetInnerHTML={{ __html: htmlString }} />
+        <BodyContainer dangerouslySetInnerHTML={{ __html: bodyString }} />
         <Script src="/javascript/genieScript.js" />
       </MainWrapper>
       <GenieSideBar />
@@ -64,9 +64,11 @@ export default function GenieModePage({ headString, htmlString }) {
 
 export async function getServerSideProps(context) {
   const { url } = context.query;
+  const { loginData } = cookies(context);
 
   if (!url) return { props: { headString: null, htmlString: null } };
 
+  const sourceDomain = url.slice(`https://`.length).split("/").shift();
   const { data } = await axios.get(url);
   const $ = cheerio.load(data);
 
@@ -75,6 +77,22 @@ export async function getServerSideProps(context) {
   $("p").each(function (i, ele) {
     $(this).attr("genie-id", `${id}`);
     id++;
+  });
+
+  $("header").first().css("position", "sticky !important");
+  $("header").first().css("top", "67px !important");
+
+  $(`script`).each(function (index, element) {
+    if (this.attribs["src"]?.startsWith("https://")) return;
+
+    $(this).attr("src", `https://${sourceDomain}${this.attribs["src"]}`);
+  });
+
+  $(`img`).each(function (index, element) {
+    if (this.attribs["src"]?.startsWith("https://")) return;
+
+    $(this).attr("src", `https://${sourceDomain}${this.attribs["src"]}`);
+    $(this).removeAttr("srcset");
   });
 
   $("body").append(
@@ -86,8 +104,15 @@ export async function getServerSideProps(context) {
    `,
   );
 
+  if (loginData) {
+    await createRecentSite(loginData.data._id, url, loginData.accessToken);
+  }
+
   return {
-    props: { headString: $("head").html(), htmlString: $.html() },
+    props: {
+      headString: $("head").html(),
+      bodyString: $("body").html(),
+    },
   };
 }
 
@@ -98,14 +123,7 @@ const GeniePageWrapper = styled.div`
 
 const MainWrapper = styled.div`
   ${props => (props.sideBar ? "flex: 0 0 60%;" : "flex: 0 0 100%;")}
-  overflow: hidden;
-  overflow-y: scroll;
   transition: all 200ms ease-in 0s;
-  display: flex;
-  flex-direction: column;
 `;
 
-const HtmlContainer = styled.div`
-  position: relative;
-  padding-top: 67px;
-`;
+const BodyContainer = styled.div``;

@@ -23,7 +23,7 @@ function UserSiteList() {
   return (
     <Wrapper>
       {recentlyVisitedSites.map(url => (
-        <Link href={`genie-mode/?url=${url}`}>
+        <Link key={url} href={`genie-mode/?url=${url}`}>
           <a>
             <UserSiteListEntry url={url} />
           </a>
