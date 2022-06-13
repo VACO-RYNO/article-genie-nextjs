@@ -15,6 +15,7 @@ import useModal from "../../lib/hooks/useModal";
 import sideBarState from "../../lib/recoil/sideBar";
 import { createRecentSite } from "../../lib/api";
 import { getCookies } from "cookies-next";
+import Router from "next/router";
 
 export default function GenieModePage({ headString, bodyString }) {
   const [isSSR, setIsSSR] = useState(true);
@@ -54,7 +55,7 @@ export default function GenieModePage({ headString, bodyString }) {
           />
         </Head>
         <BodyContainer dangerouslySetInnerHTML={{ __html: bodyString }} />
-        <Script src="/javascript/genieScript.js" />
+        <Script src="/javascript/genieScript.js" defer />
       </MainWrapper>
       <GenieSideBar />
       <GenieCornerButton />
@@ -65,12 +66,11 @@ export default function GenieModePage({ headString, bodyString }) {
 export async function getServerSideProps(context) {
   const { url } = context.query;
   let { loginData } = getCookies(context);
-  loginData = JSON.parse(loginData);
 
   if (!url) return { props: { headString: null, htmlString: null } };
 
   const sourceDomain = url.slice(`https://`.length).split("/").shift();
-  const { data } = await axios.get(url);
+  const { data } = await axios.get(url, { timeout: 5000 });
   const $ = cheerio.load(data);
 
   let id = 1;
@@ -81,7 +81,7 @@ export async function getServerSideProps(context) {
   });
 
   $("header").first().css("position", "sticky !important");
-  $("header").first().css("top", "67px !important");
+  $("header").first().css("top", "68px !important");
 
   $(`script`).each(function (index, element) {
     if (this.attribs["src"]?.startsWith("https://")) return;
@@ -106,6 +106,7 @@ export async function getServerSideProps(context) {
   );
 
   if (loginData) {
+    loginData = JSON.parse(loginData);
     await createRecentSite(loginData.data._id, url, loginData.accessToken);
   }
 

@@ -6,7 +6,6 @@ import UserSiteListEntry from "../UserSiteListEntry";
 
 import { getRecentSites } from "../../lib/api";
 import loginState from "../../lib/recoil/auth";
-import Link from "next/link";
 
 function UserSiteList() {
   const loginData = useRecoilValue(loginState);
@@ -23,15 +22,20 @@ function UserSiteList() {
   return (
     <Wrapper>
       {recentlyVisitedSites.map(url => (
-        <Link key={url} href={`genie-mode/?url=${url}`}>
-          <a>
-            <UserSiteListEntry url={url} />
-          </a>
-        </Link>
+        <LinkDiv
+          key={url}
+          onClick={() => (window.location.href = `/genie-mode/?url=${url}`)}
+        >
+          <UserSiteListEntry url={url} />
+        </LinkDiv>
       ))}
     </Wrapper>
   );
 }
+
+const LinkDiv = styled.div`
+  cursor: pointer;
+`;
 
 const Wrapper = styled.div`
   display: flex;
