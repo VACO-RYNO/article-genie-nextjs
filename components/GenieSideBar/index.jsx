@@ -2,10 +2,10 @@ import { useRecoilValue } from "recoil";
 
 import styled from "styled-components";
 
-import { isSideBarState } from "../../lib/recoil/sideBar";
+import sideBarState from "../../lib/recoil/sideBar";
 
 function GenieSideBar() {
-  const isSideBarOpen = useRecoilValue(isSideBarState);
+  const isSideBarOpen = useRecoilValue(sideBarState);
 
   return (
     <SideBar sideBar={isSideBarOpen}>

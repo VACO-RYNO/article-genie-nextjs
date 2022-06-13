@@ -13,7 +13,7 @@ import GenieSideBar from "../../components/GenieSideBar";
 import GenieCornerButton from "../../components/GenieCornerButton";
 
 import useModal from "../../lib/hooks/useModal";
-import { isSideBarState } from "../../lib/recoil/sideBar";
+import sideBarState from "../../lib/recoil/sideBar";
 
 export default function GenieModePage({ headString, htmlString }) {
   const [isSSR, setIsSSR] = useState(true);
@@ -23,7 +23,7 @@ export default function GenieModePage({ headString, htmlString }) {
   }, []);
 
   const { showModal } = useModal();
-  const isSideBarOpen = useRecoilValue(isSideBarState);
+  const isSideBarOpen = useRecoilValue(sideBarState);
 
   const parseHeadJsx = parse(headString);
 
