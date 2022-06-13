@@ -11,10 +11,13 @@ import Link from "next/link";
 function UserSiteList() {
   const loginData = useRecoilValue(loginState);
   const { data } = useQuery(
-    ["fetchRecentSites", loginData?.data._id],
-    () => getRecentSites(loginData?.data._id),
-    { select: response => response.data },
+    ["fetchRecentSites", loginData.data._id],
+    () => getRecentSites(loginData.data._id),
+    {
+      select: response => response.data,
+    },
   );
+
   const { recentlyVisitedSites } = data;
 
   return (

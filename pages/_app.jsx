@@ -8,7 +8,13 @@ import GlobalModal from "../components/GlobalModal";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 function MyApp({ Component, pageProps }) {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        suspense: true,
+      },
+    },
+  });
 
   return (
     <>
