@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
+import jwt_decode from "jwt-decode";
 import { setCookies } from "cookies-next";
-import GoogleLogin from "react-google-login";
 import styled from "styled-components";
 import { IoMdClose } from "react-icons/io";
 
@@ -11,28 +11,25 @@ import config from "../../lib/config";
 import useModal from "../../lib/hooks/useModal";
 
 function Login() {
-  const [isError, setIsError] = useState(false);
   const setLoginState = useSetRecoilState(loginState);
   const { hideModal } = useModal();
 
   useEffect(() => {
-    (async () => {
-      const { gapi } = await import("gapi-script");
+    google.accounts.id.initialize({
+      client_id: config.CLIENT_ID,
+      callback: handleLogin,
+    });
 
-      const start = () => {
-        gapi.client.init({
-          clientId: config.CLIENT_ID,
-          scope: "email",
-        });
-      };
-
-      gapi.load("client:auth2", start);
-    })();
+    google.accounts.id.renderButton(document.getElementById("sign-in"), {
+      theme: "outline",
+      size: "large",
+    });
   }, []);
 
-  const handleLogin = async googleData => {
-    const { name, email, imageUrl } = googleData.profileObj;
-    const { data } = await login({ name, email, profileImageUrl: imageUrl });
+  const handleLogin = async response => {
+    const profileObj = jwt_decode(response.credential);
+    const { name, email, picture } = profileObj;
+    const { data } = await login({ name, email, profileImageUrl: picture });
 
     setLoginState(data);
     setCookies("loginData", JSON.stringify(data));
@@ -40,25 +37,11 @@ function Login() {
     hideModal();
   };
 
-  const handleFailure = () => {
-    setIsError(true);
-  };
-
   return (
     <Wrapper>
       <CloseButton onClick={hideModal} />
-      {isError ? (
-        "로그인 오류!"
-      ) : (
-        <>
-          <LoginTitle>Let Genie Works.</LoginTitle>
-          <GoogleLogin
-            clientId={config.CLIENT_ID}
-            onSuccess={handleLogin}
-            onFailure={handleFailure}
-          ></GoogleLogin>
-        </>
-      )}
+      <LoginTitle>Let Genie Works.</LoginTitle>
+      <div id="sign-in"></div>
     </Wrapper>
   );
 }
