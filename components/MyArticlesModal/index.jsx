@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import useModal from "../../lib/hooks/useModal";
 
-export default function Modal({ children }) {
+export default function MyArticlesModal({ children }) {
   const { hideModal } = useModal();
 
   return ReactDom.createPortal(
@@ -28,11 +28,9 @@ const ModalOverlay = styled.div`
 
 const ModalContainer = styled.div`
   position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 500px;
-  height: 350px;
-  transform: translate(-50%, -50%);
+  top: 68%;
+  right: 5rem;
+  transform: translate(-10%, -70%);
   display: flex;
   flex-direction: column;
   background-color: #fff;

@@ -13,6 +13,8 @@ import { BsShareFill } from "react-icons/bs";
 import useModal from "../../lib/hooks/useModal";
 import { isLoginState } from "../../lib/recoil/auth";
 
+import AddressBar from "../AddressBar";
+
 function AppHeader() {
   const [isSSR, setIsSSR] = useState(true);
 
@@ -65,10 +67,10 @@ function AppHeader() {
           </a>
         </Link>
         {router.pathname.includes("genie-mode") && (
-          <ShareIcon
-            onClick={handleShareButtonClick}
-            isLogin={isLogin}
-          ></ShareIcon>
+          <AddressBarWrapper>
+            <AddressBar />
+            <ShareIcon onClick={handleShareButtonClick} />
+          </AddressBarWrapper>
         )}
         {!isSSR && isLogin ? (
           <ProfileIcon onClick={handleProfileClick} />
@@ -84,9 +86,10 @@ const Header = styled.div`
   z-index: 1000;
   position: fixed;
   display: flex;
+  flex-direction: row;
   align-items: center;
   background-color: #ffffff;
-  width: 100%;
+  width: 100vw;
   height: 67px;
   top: 0;
   border: 1px solid #e6e6e6;
@@ -132,6 +135,14 @@ const Brand = styled.div`
   }
 `;
 
+const AddressBarWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 80%;
+  margin-right: 150px;
+`;
+
 const ProfileIcon = styled(BsPersonCircle)`
   position: absolute;
   right: 29px;
@@ -141,8 +152,6 @@ const ProfileIcon = styled(BsPersonCircle)`
 `;
 
 const ShareIcon = styled(BsShareFill)`
-  position: absolute;
-  ${props => (props.isLogin ? "right: 90px;" : "right: 150px;")}
   width: 28px;
   height: 28px;
   color: #bcbcbc;

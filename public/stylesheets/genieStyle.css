@@ -2,6 +2,10 @@ header {
   top: 67px !important;
 }
 
+body header:first-child {
+  position: relative;
+}
+
 .highlight {
   background-color: #fcddec;
   border-radius: 5px;
