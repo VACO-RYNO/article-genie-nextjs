@@ -1,5 +1,4 @@
-import { useRecoilValue } from "recoil";
-
+import { useRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
 import cheerio from "cheerio";
 import { useState, useEffect } from "react";
@@ -13,35 +12,47 @@ import GenieCornerButton from "../../components/GenieCornerButton";
 
 import useModal from "../../lib/hooks/useModal";
 import sideBarState from "../../lib/recoil/sideBar";
+import { isLoginState } from "../../lib/recoil/auth";
 import { createRecentSite } from "../../lib/api";
 import { getCookies } from "cookies-next";
-import Router from "next/router";
 
 export default function GenieModePage({ headString, bodyString }) {
-  const [isSSR, setIsSSR] = useState(true);
-
-  useEffect(() => {
-    setIsSSR(false);
-  }, []);
-
   const { showModal } = useModal();
-  const isSideBarOpen = useRecoilValue(sideBarState);
+  const [isSideBarOpen, setIsSideBarOpen] = useRecoilState(sideBarState);
+  const isLogin = useRecoilValue(isLoginState);
   const parseHeadJsx = headString ? parse(headString) : "";
 
-  const handleLinkButtonClick = () => {
-    showModal({
-      modalType: "ConfirmModal",
-      modalProps: {
-        message: "링크가 클립보드에 복사되었습니다.",
-      },
-    });
-  };
-
-  if (!isSSR) {
+  useEffect(() => {
     const genieModeLinkButton = document.getElementById("genie-mode-link");
+    const genieModeMemoButton = document.getElementById("genie-mode-memo");
+
+    const handleLinkButtonClick = () => {
+      showModal({
+        modalType: "ConfirmModal",
+        modalProps: {
+          message: "링크가 클립보드에 복사되었습니다.",
+        },
+      });
+    };
+
+    const handleMemoButtonClick = () => {
+      if (!isLogin) {
+        showModal({
+          modalType: "LoginModal",
+        });
+      } else {
+        setIsSideBarOpen(true);
+      }
+    };
 
     genieModeLinkButton.addEventListener("click", handleLinkButtonClick);
-  }
+    genieModeMemoButton.addEventListener("click", handleMemoButtonClick);
+
+    return () => {
+      genieModeLinkButton.removeEventListener("click", handleLinkButtonClick);
+      genieModeMemoButton.removeEventListener("click", handleMemoButtonClick);
+    };
+  }, [isLogin]);
 
   return (
     <GeniePageWrapper>
@@ -66,6 +77,8 @@ export default function GenieModePage({ headString, bodyString }) {
 export async function getServerSideProps(context) {
   const { url } = context.query;
   let { loginData } = getCookies(context);
+
+  loginData = loginData && JSON.parse(loginData);
 
   if (!url) return { props: { headString: null, htmlString: null } };
 

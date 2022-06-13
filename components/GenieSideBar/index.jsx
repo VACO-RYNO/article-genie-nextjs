@@ -9,7 +9,7 @@ function GenieSideBar() {
 
   return (
     <SideBar sideBar={isSideBarOpen}>
-      <textarea className="side-textarea"></textarea>
+      <div id="side-editor" contenteditable="true"></div>
     </SideBar>
   );
 }
@@ -26,11 +26,10 @@ const SideBar = styled.div`
   flex-direction: column;
   background-color: rgba(0, 0, 0, 0.05);
 
-  .side-textarea {
+  #side-editor {
     height: 100%;
     border: none;
     padding: 2rem;
-    background-color: rgba(0, 0, 0, 0.05);
   }
 `;
 
