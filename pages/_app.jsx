@@ -38,8 +38,6 @@ MyApp.propTypes = {
   pageProps: PropTypes.object,
 };
 
-const Main = styled.main`
-  border: 1px solid pink;
-`;
+const Main = styled.main``;
 
 export default MyApp;
