@@ -39,6 +39,7 @@ body {
   display: none;
   width: 245px;
   height: 50px;
+  z-index: 9999;
 }
 
 #genie-hover-modal.show {

@@ -1,5 +1,7 @@
 const pList = document.querySelectorAll("p");
 const genieModeLinkButton = document.getElementById("genie-mode-link");
+const genieModeMemoButton = document.getElementById("genie-mode-memo");
+const sideEditor = document.getElementById("side-editor");
 const hoverModal = document.getElementById("genie-hover-modal");
 const genieTag = document.querySelector("#genie-hover-modal > p");
 
@@ -55,11 +57,22 @@ genieModeLinkButton.addEventListener("click", async () => {
     await navigator.clipboard.writeText(
       `${window.location.origin}${window.location.pathname}${window.location.search}#genie-id-${genieId}`,
     );
-  } catch (error) {
+  } catch {
     alert("오류가 발생하였습니다. 잠시 후 다시 시도해주세요.");
   }
 
   clickElement.classList.remove("element-click");
+  hoverModal.classList.remove("show");
+});
+
+genieModeMemoButton.addEventListener("click", async () => {
+  const copiedGenieTag = genieTag.cloneNode(true);
+  const br = document.createElement("br");
+
+  copiedGenieTag.appendChild(br);
+  copiedGenieTag.classList.remove("hide");
+  sideEditor.innerHTML += copiedGenieTag.outerHTML;
+
   hoverModal.classList.remove("show");
 });
 
