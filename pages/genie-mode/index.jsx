@@ -1,7 +1,7 @@
 import { useRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
 import cheerio from "cheerio";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Head from "next/head";
 import parse from "html-react-parser";
 import styled from "styled-components";

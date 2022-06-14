@@ -1,13 +1,46 @@
-import { useSetRecoilState } from "recoil";
-
+import { useEffect } from "react";
+import { useSetRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 
 import useModal from "../../lib/hooks/useModal";
+import loginState from "../../lib/recoil/auth";
 import sideBarState from "../../lib/recoil/sideBar";
+import { createArticle, getArticleList } from "../../lib/api";
 
 function MyArticlesList() {
   const setIsSideBarOpen = useSetRecoilState(sideBarState);
   const { hideModal } = useModal();
+  const { data } = useRecoilValue(loginState);
+  const userId = data._id;
+  const originUrl = useRouter().query.url;
+
+  useEffect(() => {
+    (async () => {
+      try {
+        await getArticleList(userId); // endpoint 작업 이후 추가 진행
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  }, []);
+
+  const handleNewArticleButtonClick = async () => {
+    const initialForm = {
+      title: "새 아티클",
+      tag: "미분류",
+      lastVisitedSiteUrl: originUrl,
+    };
+
+    try {
+      await createArticle(userId, initialForm);
+
+      hideModal();
+      setIsSideBarOpen(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleSideBarClick = () => {
     hideModal();
@@ -17,7 +50,9 @@ function MyArticlesList() {
 
   return (
     <MyArticlesWrapper>
-      <NewArticleButton onClick={handleSideBarClick}>&#43;</NewArticleButton>
+      <NewArticleButton onClick={handleNewArticleButtonClick}>
+        &#43;
+      </NewArticleButton>
       <div className="temp-style-article" onClick={handleSideBarClick}>
         My Article 1
       </div>
