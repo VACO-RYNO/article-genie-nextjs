@@ -1,32 +1,78 @@
 import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
+import { useQuery } from "react-query";
 import styled from "styled-components";
 
 import sideBarState from "../../lib/recoil/sideBar";
 import currentArticleIdState from "../../lib/recoil/currentArticleId/atom";
 import loginState from "../../lib/recoil/auth";
-import { getArticle } from "../../lib/api";
+import { getArticle, updateArticle } from "../../lib/api";
+import useModal from "../../lib/hooks/useModal";
 
 function GenieSideBar() {
   const isSideBarOpen = useRecoilValue(sideBarState);
   const currentArticleId = useRecoilValue(currentArticleIdState);
   const loginData = useRecoilValue(loginState);
   const [articleData, setArticleData] = useState({});
+  const { showModal } = useModal();
 
   useEffect(() => {
     (async () => {
-      const userId = loginData?.data._id;
-      const { data } = await getArticle(userId, currentArticleId);
-      setArticleData(data);
+      try {
+        const userId = loginData?.data._id;
+        const { data } = await getArticle(userId, currentArticleId);
+
+        setArticleData(data);
+      } catch {
+        showModal({
+          modalType: "ErrorModal",
+          modalProps: {
+            message: "데이터를 불러오는데 실패했습니다.",
+          },
+        });
+      }
     })();
   }, [loginData, currentArticleId]);
 
-  const handleArticleSaveButtonClick = () => {};
+  const handleArticleSaveButtonClick = async () => {
+    try {
+      const userId = loginData.data._id;
+
+      delete articleData._id;
+      await updateArticle(userId, currentArticleId, articleData);
+    } catch {
+      showModal({
+        modalType: "ErrorModal",
+        modalProps: {
+          message: "작업을 실패했습니다.",
+        },
+      });
+    }
+  };
 
   return (
     <SideBar sideBar={isSideBarOpen}>
-      <TitleInput placeholder="아티클 제목" defaultValue={articleData.title} />
-      <div id="side-editor" contentEditable="true">
+      <TitleInput
+        name="article-title"
+        placeholder="아티클 제목"
+        defaultValue={articleData.title}
+        onChange={e => {
+          setArticleData(data => {
+            data.title = e.target.value;
+            return data;
+          });
+        }}
+      />
+      <div
+        id="side-editor"
+        contentEditable="true"
+        onInput={e => {
+          setArticleData(data => {
+            data.contents = e.target.innerHTML;
+            return data;
+          });
+        }}
+      >
         {articleData.contents}
       </div>
       <button onClick={handleArticleSaveButtonClick}>저장</button>
