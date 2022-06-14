@@ -6,6 +6,8 @@ import AppHeader from "../components/AppHeader";
 import Container from "../components/shared/Container";
 import GlobalModal from "../components/GlobalModal";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 function MyApp({ Component, pageProps }) {
   const queryClient = new QueryClient({
@@ -20,13 +22,19 @@ function MyApp({ Component, pageProps }) {
     <>
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
-          <GlobalModal />
-          <AppHeader />
-          <Main>
-            <Container>
-              <Component {...pageProps} />
-            </Container>
-          </Main>
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <ErrorBoundary
+              fallbackRender={({ error }) => <div>{error.message}</div>}
+            >
+              <GlobalModal />
+              <AppHeader />
+              <Main>
+                <Container>
+                  <Component {...pageProps} />
+                </Container>
+              </Main>
+            </ErrorBoundary>
+          </Suspense>
         </QueryClientProvider>
       </RecoilRoot>
     </>
