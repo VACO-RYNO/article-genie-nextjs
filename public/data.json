@@ -1,21 +1,49 @@
 {
   "sites": [
     {
+      "theme": "News",
+      "name": "NBC",
+      "originUrl": "https://www.nbcmiami.com/entertainment/entertainment-news/post-malone-welcomes-a-baby-girl-and-reveals-hes-engaged/2783715/",
+      "logoUrl": "https://media-cldnry.s-nbcnews.com/image/upload/newscms/2020_26/3392750/nbcnews_color_2_8.jpg"
+    },
+    {
+      "theme": "News",
+      "name": "Los Angels Times",
+      "originUrl": "https://www.latimes.com/business/story/2022-06-14/california-home-buying-sellers-slash-prices",
+      "logoUrl": "https://play-lh.googleusercontent.com/y8fBXWtyM6qCVqNmyLrSJrYIwEzEv_3g-5yrcbm8GLV-wO4KSrlNhlzJWJlANi1Y-Zhh"
+    },
+    {
+      "theme": "News",
+      "name": "CAPITAL & MAIN",
+      "originUrl": "https://capitalandmain.com/inflation-dealing-a-gut-punch-to-money-strapped-californians",
+      "logoUrl": "https://res.cloudinary.com/crunchbase-production/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/v1424512222/yzyeklqxazv3d1vookqk.png"
+    },
+    {
+      "theme": "News",
+      "name": "VOA",
+      "originUrl": "http://localhost:3000/genie-mode?url=https%3A%2F%2Fwww.voanews.com%2Fa%2Fwhite-house-hails-gun-reform-framework-as-step-forward-%2F6616483.html#genie-id-13",
+      "logoUrl": "https://www.nonviolent-conflict.org/wp-content/uploads/2019/11/voa-logo-2.png"
+    },
+    {
+      "theme": "Tech",
       "name": "Stack Overflow",
       "originUrl": "https://stackoverflow.com/questions/62967958/what-is-the-difference-between-nextjs-and-create-react-app",
       "logoUrl": "https://cdn.sstatic.net/Sites/stackoverflow/Img/apple-touch-icon@2.png?v=73d79a89bded"
     },
     {
+      "theme": "Tech",
       "name": "React",
       "originUrl": "https://reactjs.org/docs/add-react-to-a-website.html",
       "logoUrl": "https://cdn4.iconfinder.com/data/icons/logos-3/600/React.js_logo-512.png"
     },
     {
+      "theme": "Tech",
       "name": "Tistroy",
       "originUrl": "https://im-developer.tistory.com/113",
       "logoUrl": "https://t1.kakaocdn.net/kakaocorp/kakaocorp/admin/5a539919017800001.png"
     },
     {
+      "theme": "Tech",
       "name": "Express",
       "originUrl": "https://expressjs.com/ko/4x/api.html#app",
       "logoUrl": "https://symbols.getvecta.com/stencil_79/88_expressjs-icon.54bb6035d3.jpg"

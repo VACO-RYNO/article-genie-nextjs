@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 
 import SiteListEntry from "../SiteListEntry";
 
-function SiteList() {
+function SiteList({ siteTheme }) {
   const [recommendedSites, setRecommendedSites] = useState([]);
 
   useEffect(() => {
@@ -21,14 +21,17 @@ function SiteList() {
 
   return (
     <GridWrapper>
-      {recommendedSites.map((site, index) => (
-        <SiteListEntry
-          key={index}
-          name={site.name}
-          originUrl={site.originUrl}
-          logoUrl={site.logoUrl}
-        ></SiteListEntry>
-      ))}
+      <ThemeTitle>{siteTheme}</ThemeTitle>
+      {recommendedSites
+        .filter(site => site.theme === siteTheme)
+        .map((site, index) => (
+          <SiteListEntry
+            key={index}
+            name={site.name}
+            originUrl={site.originUrl}
+            logoUrl={site.logoUrl}
+          ></SiteListEntry>
+        ))}
     </GridWrapper>
   );
 }
@@ -36,6 +39,14 @@ function SiteList() {
 SiteList.propTypes = {
   sites: PropTypes.array,
 };
+
+const ThemeTitle = styled.h3`
+  color: #000;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 27px;
+  padding: 0 33px;
+`;
 
 const GridWrapper = styled.div`
   display: grid;
@@ -47,7 +58,7 @@ const GridWrapper = styled.div`
   border-radius: 4px;
   box-shadow: 0 6px 10px 0 rgb(0 0 0 / 8%), 0 0 2px 0 rgb(0 0 0 / 15%);
   overflow: hidden;
-  padding: 32px 24px;
+  padding: 32px 0 24px;
 `;
 
 export default SiteList;
