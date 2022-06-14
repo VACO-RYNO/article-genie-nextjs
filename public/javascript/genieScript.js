@@ -6,6 +6,7 @@ const hoverModal = document.getElementById("genie-hover-modal");
 const genieTag = document.querySelector("#genie-hover-modal > p");
 
 let previousHash = "";
+let previousClickEle;
 
 if (location.hash) {
   previousHash = location.hash;
@@ -25,6 +26,13 @@ pList.forEach(element => {
   element.addEventListener("click", e => {
     e.target.classList.remove("highlight");
     e.target.classList.add("element-click");
+
+    if (previousClickEle) {
+      previousClickEle?.classList.remove("element-click");
+    }
+
+    previousClickEle = e.target;
+
     hoverModal.style.left = e.pageX - 0 + "px";
     hoverModal.style.top = e.pageY - 100 + "px";
     hoverModal.classList.add("show");
@@ -51,7 +59,6 @@ window.addEventListener("mousemove", e => {
 
 genieModeLinkButton.addEventListener("click", async () => {
   const genieId = genieTag.getAttribute("genie-id");
-  const clickElement = document.querySelector(`[genie-id="${genieId}"]`);
 
   try {
     await navigator.clipboard.writeText(
@@ -61,13 +68,11 @@ genieModeLinkButton.addEventListener("click", async () => {
     alert("오류가 발생하였습니다. 잠시 후 다시 시도해주세요.");
   }
 
-  clickElement.classList.remove("element-click");
+  previousClickEle?.classList.remove("element-click");
   hoverModal.classList.remove("show");
 });
 
 genieModeMemoButton.addEventListener("click", async () => {
-  const genieId = genieTag.getAttribute("genie-id");
-  const clickElement = document.querySelector(`[genie-id="${genieId}"]`);
   const copiedGenieTag = genieTag.cloneNode(true);
   const br = document.createElement("br");
 
@@ -75,7 +80,7 @@ genieModeMemoButton.addEventListener("click", async () => {
   copiedGenieTag.classList.remove("hide");
   sideEditor.innerHTML += copiedGenieTag.outerHTML;
 
-  clickElement.classList.remove("element-click");
+  previousClickEle?.classList.remove("element-click");
   hoverModal.classList.remove("show");
 });
 
