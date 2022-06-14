@@ -1,15 +1,35 @@
+import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import sideBarState from "../../lib/recoil/sideBar";
+import currentArticleIdState from "../../lib/recoil/currentArticleId/atom";
+import loginState from "../../lib/recoil/auth";
+import { getArticle } from "../../lib/api";
 
 function GenieSideBar() {
   const isSideBarOpen = useRecoilValue(sideBarState);
+  const currentArticleId = useRecoilValue(currentArticleIdState);
+  const loginData = useRecoilValue(loginState);
+  const [articleData, setArticleData] = useState({});
+
+  useEffect(() => {
+    (async () => {
+      const userId = loginData.data._id;
+      const { data } = await getArticle(userId, currentArticleId);
+      setArticleData(data);
+    })();
+  }, [loginData, currentArticleId]);
+
+  const handleArticleSaveButtonClick = () => {};
 
   return (
     <SideBar sideBar={isSideBarOpen}>
-      <TitleInput placeholder="아티클 제목" />
-      <div id="side-editor" contenteditable="true"></div>
+      <TitleInput placeholder="아티클 제목" defaultValue={articleData.title} />
+      <div id="side-editor" contentEditable="true">
+        {articleData.contents}
+      </div>
+      <button onClick={handleArticleSaveButtonClick}>저장</button>
     </SideBar>
   );
 }
