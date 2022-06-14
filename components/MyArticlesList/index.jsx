@@ -10,7 +10,7 @@ import { createArticle, getArticleList } from "../../lib/api";
 
 function MyArticlesList() {
   const setIsSideBarOpen = useSetRecoilState(sideBarState);
-  const { hideModal } = useModal();
+  const { hideModal, showModal } = useModal();
   const { data } = useRecoilValue(loginState);
   const userId = data._id;
   const originUrl = useRouter().query.url;
@@ -20,7 +20,12 @@ function MyArticlesList() {
       try {
         await getArticleList(userId); // endpoint 작업 이후 추가 진행
       } catch (err) {
-        console.error(err);
+        showModal({
+          modalType: "ErrorModal",
+          modalProps: {
+            message: "작업을 실패했습니다.",
+          },
+        });
       }
     })();
   }, []);
@@ -37,8 +42,13 @@ function MyArticlesList() {
 
       hideModal();
       setIsSideBarOpen(true);
-    } catch (err) {
-      console.error(err);
+    } catch {
+      showModal({
+        modalType: "ErrorModal",
+        modalProps: {
+          message: "작업을 실패했습니다.",
+        },
+      });
     }
   };
 
