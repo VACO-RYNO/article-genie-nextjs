@@ -1,5 +1,4 @@
 import { useRecoilValue } from "recoil";
-
 import styled from "styled-components";
 
 import sideBarState from "../../lib/recoil/sideBar";
@@ -9,6 +8,7 @@ function GenieSideBar() {
 
   return (
     <SideBar sideBar={isSideBarOpen}>
+      <TitleInput placeholder="아티클 제목" />
       <div id="side-editor" contenteditable="true"></div>
     </SideBar>
   );
@@ -31,6 +31,10 @@ const SideBar = styled.div`
     border: none;
     padding: 2rem;
   }
+`;
+
+const TitleInput = styled.input`
+  height: 40px;
 `;
 
 export default GenieSideBar;
