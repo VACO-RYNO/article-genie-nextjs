@@ -66,6 +66,8 @@ genieModeLinkButton.addEventListener("click", async () => {
 });
 
 genieModeMemoButton.addEventListener("click", async () => {
+  const genieId = genieTag.getAttribute("genie-id");
+  const clickElement = document.querySelector(`[genie-id="${genieId}"]`);
   const copiedGenieTag = genieTag.cloneNode(true);
   const br = document.createElement("br");
 
@@ -73,6 +75,7 @@ genieModeMemoButton.addEventListener("click", async () => {
   copiedGenieTag.classList.remove("hide");
   sideEditor.innerHTML += copiedGenieTag.outerHTML;
 
+  clickElement.classList.remove("element-click");
   hoverModal.classList.remove("show");
 });
 
