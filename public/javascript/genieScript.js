@@ -91,18 +91,21 @@ window.addEventListener("hashchange", () => {
     `[genie-id="${location.hash.split("-")[2]}"]`,
   );
 
-  window.scrollTo({
-    top: target.offsetTop - 100,
-    behavior: "smooth",
-  });
+  if (target) {
+    window.scrollTo({
+      top: target.offsetTop - 100,
+      behavior: "smooth",
+    });
 
-  if (previousHash.length > 0) {
+    target.classList.add("focus");
+  }
+
+  if (previousHash) {
     const previousTarget = document.querySelector(
       `[genie-id="${previousHash.split("-")[2]}"]`,
     );
-    previousTarget.classList.remove("focus");
+    previousTarget?.classList.remove("focus");
   }
 
-  target.classList.add("focus");
   previousHash = location.hash;
 });

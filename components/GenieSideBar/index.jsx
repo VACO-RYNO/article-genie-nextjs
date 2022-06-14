@@ -15,7 +15,7 @@ function GenieSideBar() {
 
   useEffect(() => {
     (async () => {
-      const userId = loginData.data._id;
+      const userId = loginData?.data._id;
       const { data } = await getArticle(userId, currentArticleId);
       setArticleData(data);
     })();

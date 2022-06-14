@@ -6,7 +6,11 @@ function RecommendedSites() {
   return (
     <Wrapper>
       <MainPageTitle>Recommended Sites</MainPageTitle>
-      <SiteList />
+      <SiteListWrapper>
+        <SiteList siteTheme={"News"} />
+        <SiteList siteTheme={"Tech"} />
+        <SiteList />
+      </SiteListWrapper>
     </Wrapper>
   );
 }
@@ -16,7 +20,11 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-top: 90px;
+  margin-top: 60px;
+`;
+
+const SiteListWrapper = styled.div`
+  display: flex;
 `;
 
 export default RecommendedSites;
