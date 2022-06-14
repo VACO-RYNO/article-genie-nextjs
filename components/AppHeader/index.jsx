@@ -92,7 +92,7 @@ const Header = styled.div`
   width: 100vw;
   height: 67px;
   top: 0;
-  border: 1px solid #e6e6e6;
+  border-bottom: 1px solid #e6e6e6;
 
   a {
     text-decoration: none;
@@ -140,12 +140,12 @@ const AddressBarWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   width: 80%;
-  margin-right: 150px;
+  margin-right: 50px;
 `;
 
 const ProfileIcon = styled(BsPersonCircle)`
   position: absolute;
-  right: 29px;
+  right: 60px;
   width: 40px;
   height: 40px;
   color: #bcbcbc;
