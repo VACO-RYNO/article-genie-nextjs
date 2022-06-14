@@ -91,11 +91,20 @@ export async function getServerSideProps(context) {
     id++;
   });
 
-  $("header").first().css("position", "sticky !important");
+  if (sourceDomain === "stackoverflow.com") {
+    $(`header`).first().css("position", "sticky !important");
+  }
+
   $("header").first().css("top", "68px !important");
   $("header").first().css("z-index", "999");
 
   $("header > div").first().css("top", "68px !important");
+
+  $(`link`).each(function (index, element) {
+    if (this.attribs["href"]?.startsWith("https://")) return;
+
+    $(this).attr("href", `https://${sourceDomain}${this.attribs["href"]}`);
+  });
 
   $(`script`).each(function (index, element) {
     if (this.attribs["src"]?.startsWith("https://")) return;

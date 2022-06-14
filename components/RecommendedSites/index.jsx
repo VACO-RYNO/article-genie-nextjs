@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin-top: 40px;
+  margin-top: 90px;
 `;
 
 export default RecommendedSites;

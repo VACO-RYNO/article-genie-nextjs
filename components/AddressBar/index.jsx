@@ -5,7 +5,7 @@ import { BsSearch } from "react-icons/bs";
 import useModal from "../../lib/hooks/useModal";
 
 function AddressBar() {
-  const [searchInput, setSearchInput] = useState("https://");
+  const [searchInput, setSearchInput] = useState("");
   const { showModal } = useModal();
   const handleChange = e => setSearchInput(e.target.value);
   const validURL = str => {
@@ -43,7 +43,6 @@ function AddressBar() {
             value={searchInput}
             onChange={handleChange}
             placeholder="Enter a URL of the website."
-            inputValue={searchInput}
             required
           />
           <SearchIcon onClick={handleSubmit} />
@@ -57,29 +56,33 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   margin: auto;
+  width: auto;
 `;
 
 const AddressBarWrapper = styled.div`
   display: flex;
+  width: auto;
+  height: 48px;
   border: 1px solid #6466ff;
-  border-radius: 40px;
+  border-radius: 25px;
   justify-content: space-around;
   align-items: center;
   padding: 2px 20px;
 `;
 
 const AddressBarInput = styled.input`
-  width: 50vw;
+  width: 45vw;
   height: 35px;
   border: none !important;
 
-  ${props =>
-    props.inputValue === "https://" || props.inputValue.length < 8
-      ? "color: #6d6e73;"
-      : "color: black;"}
-
   &:focus {
     outline: none;
+  }
+
+  &::placeholder {
+    font-size: 14px;
+    font-weight: 400;
+    color: #6466ff;
   }
 `;
 
