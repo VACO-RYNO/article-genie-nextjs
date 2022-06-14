@@ -14,12 +14,14 @@ if (location.hash) {
     `[genie-id="${location.hash.split("-")[2]}"]`,
   );
 
-  window.scrollTo({
-    top: target.offsetTop - 100,
-    behavior: "smooth",
-  });
+  if (target) {
+    window.scrollTo({
+      top: target.offsetTop - 100,
+      behavior: "smooth",
+    });
 
-  target.classList.add("focus");
+    target.classList.add("focus");
+  }
 }
 
 pList.forEach(element => {
