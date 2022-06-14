@@ -19,9 +19,6 @@ if (location.hash) {
   target.classList.add("focus");
 }
 
-let timer;
-const delay = 1000;
-
 pList.forEach(element => {
   element.addEventListener("click", e => {
     e.target.classList.remove("highlight");
