@@ -78,8 +78,6 @@ export async function getServerSideProps(context) {
   const { url } = context.query;
   let { loginData } = getCookies(context);
 
-  loginData = loginData && JSON.parse(loginData);
-
   if (!url) return { props: { headString: null, htmlString: null } };
 
   const sourceDomain = url.slice(`https://`.length).split("/").shift();
