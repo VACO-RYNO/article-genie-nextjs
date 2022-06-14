@@ -8,6 +8,7 @@ import ProfileModal from "../ProfileModal";
 import Profile from "../Profile";
 import MyArticlesModal from "../MyArticlesModal";
 import MyArticlesList from "../MyArticlesList";
+import ErrorModal from "../ErrorModal";
 
 function GlobalModal() {
   const { modalType, modalProps } = useRecoilValue(modalState) || {};
@@ -33,6 +34,8 @@ function GlobalModal() {
       );
     case "ConfirmModal":
       return <ConfirmModal>{modalProps.message}</ConfirmModal>;
+    case "ErrorModal":
+      return <ErrorModal>{modalProps.message}</ErrorModal>;
   }
 }
 

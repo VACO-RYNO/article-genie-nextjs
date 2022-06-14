@@ -1,4 +1,4 @@
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import axios from "axios";
 import cheerio from "cheerio";
 import { useEffect } from "react";
@@ -18,7 +18,7 @@ import { getCookies } from "cookies-next";
 
 export default function GenieModePage({ headString, bodyString }) {
   const { showModal } = useModal();
-  const [isSideBarOpen, setIsSideBarOpen] = useRecoilState(sideBarState);
+  const isSideBarOpen = useRecoilValue(sideBarState);
   const isLogin = useRecoilValue(isLoginState);
   const parseHeadJsx = headString ? parse(headString) : "";
 
@@ -40,8 +40,10 @@ export default function GenieModePage({ headString, bodyString }) {
         showModal({
           modalType: "LoginModal",
         });
-      } else {
-        setIsSideBarOpen(true);
+      } else if (!isSideBarOpen) {
+        showModal({
+          modalType: "MyArticlesModal",
+        });
       }
     };
 
@@ -52,7 +54,7 @@ export default function GenieModePage({ headString, bodyString }) {
       genieModeLinkButton.removeEventListener("click", handleLinkButtonClick);
       genieModeMemoButton.removeEventListener("click", handleMemoButtonClick);
     };
-  }, [isLogin]);
+  }, [isLogin, isSideBarOpen]);
 
   return (
     <GeniePageWrapper>
