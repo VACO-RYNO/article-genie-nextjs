@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export default styled.h1`
+  width: 100vw;
   text-align: center;
   font-style: normal;
   font-weight: 700;
