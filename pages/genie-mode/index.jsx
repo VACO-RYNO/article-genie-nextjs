@@ -81,7 +81,7 @@ export async function getServerSideProps(context) {
   if (!url) return { props: { headString: null, htmlString: null } };
 
   const sourceDomain = url.slice(`https://`.length).split("/").shift();
-  const { data } = await axios.get(url, { timeout: 5000 });
+  const { data } = await axios.get(url, { timeout: 2500 });
   const $ = cheerio.load(data);
 
   let id = 1;
@@ -93,6 +93,9 @@ export async function getServerSideProps(context) {
 
   $("header").first().css("position", "sticky !important");
   $("header").first().css("top", "68px !important");
+  $("header").first().css("z-index", "999");
+
+  $("header > div").first().css("top", "68px !important");
 
   $(`script`).each(function (index, element) {
     if (this.attribs["src"]?.startsWith("https://")) return;
