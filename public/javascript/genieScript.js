@@ -1,4 +1,5 @@
 const pList = document.querySelectorAll("p");
+const aList = document.querySelectorAll(`a[genie-link="true"]`);
 const genieModeLinkButton = document.getElementById("genie-mode-link");
 const genieModeMemoButton = document.getElementById("genie-mode-memo");
 const sideEditor = document.getElementById("side-editor");
@@ -24,7 +25,7 @@ if (location.hash) {
   }
 }
 
-pList.forEach(element => {
+pList?.forEach(element => {
   element.addEventListener("click", e => {
     e.target.classList.remove("highlight");
     e.target.classList.add("element-click");
@@ -59,7 +60,7 @@ window.addEventListener("mousemove", e => {
   });
 });
 
-genieModeLinkButton.addEventListener("click", async () => {
+genieModeLinkButton?.addEventListener("click", async () => {
   const genieId = genieTag.getAttribute("genie-id");
 
   try {
@@ -74,7 +75,7 @@ genieModeLinkButton.addEventListener("click", async () => {
   hoverModal.classList.remove("show");
 });
 
-genieModeMemoButton.addEventListener("click", async () => {
+genieModeMemoButton?.addEventListener("click", async () => {
   const copiedGenieTag = genieTag.cloneNode(true);
   const br = document.createElement("br");
 
@@ -108,4 +109,12 @@ window.addEventListener("hashchange", () => {
   }
 
   previousHash = location.hash;
+});
+
+aList?.forEach(element => {
+  element.addEventListener("click", e => {
+    e.preventDefault();
+
+    window.location.href = e.target.href;
+  });
 });

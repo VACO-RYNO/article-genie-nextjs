@@ -16,14 +16,27 @@ import sideBarState from "../../lib/recoil/sideBar";
 import { isLoginState } from "../../lib/recoil/auth";
 import { createRecentSite } from "../../lib/api";
 import { getCookies } from "cookies-next";
+import { useRouter } from "next/router";
 
 export default function GenieModePage({ headString, bodyString }) {
   const { showModal } = useModal();
   const isSideBarOpen = useRecoilValue(sideBarState);
   const isLogin = useRecoilValue(isLoginState);
   const parseHeadJsx = headString ? parse(headString) : "";
+  const router = useRouter();
 
   useEffect(() => {
+    if (!bodyString) {
+      showModal({
+        modalType: "ErrorModal",
+        modalProps: {
+          message: "지원하지 않는 웹페이지 입니다.",
+        },
+      });
+
+      return () => router.push("/");
+    }
+
     const genieModeLinkButton = document.getElementById("genie-mode-link");
     const genieModeMemoButton = document.getElementById("genie-mode-memo");
 
@@ -48,12 +61,12 @@ export default function GenieModePage({ headString, bodyString }) {
       }
     };
 
-    genieModeLinkButton.addEventListener("click", handleLinkButtonClick);
-    genieModeMemoButton.addEventListener("click", handleMemoButtonClick);
+    genieModeLinkButton?.addEventListener("click", handleLinkButtonClick);
+    genieModeMemoButton?.addEventListener("click", handleMemoButtonClick);
 
     return () => {
-      genieModeLinkButton.removeEventListener("click", handleLinkButtonClick);
-      genieModeMemoButton.removeEventListener("click", handleMemoButtonClick);
+      genieModeLinkButton?.removeEventListener("click", handleLinkButtonClick);
+      genieModeMemoButton?.removeEventListener("click", handleMemoButtonClick);
     };
   }, [isLogin, isSideBarOpen]);
 
@@ -84,7 +97,9 @@ export async function getServerSideProps(context) {
   if (!url) return { props: { headString: null, htmlString: null } };
 
   const sourceDomain = url.slice(`https://`.length).split("/").shift();
-  const { data } = await axios.get(url, { timeout: 2500 });
+  const { data } = await axios.get(url, {
+    timeout: 2500,
+  });
   const $ = cheerio.load(data);
 
   let id = 1;
@@ -94,14 +109,14 @@ export async function getServerSideProps(context) {
     id++;
   });
 
-  if (sourceDomain !== "expressjs.com") {
+  if (sourceDomain !== "expressjs.com" && sourceDomain !== "www.latimes.com") {
     $(`header`).first().css("position", "sticky !important");
   }
 
   $("header").first().css("top", "68px !important");
   $("header").first().css("z-index", "999");
 
-  $("header > div").first().css("top", "68px !important");
+  $(`div[class="inner_header"]`).first().css("top", "68px !important");
 
   $(`link`).each(function (index, element) {
     if (this.attribs["href"]?.startsWith("https://")) return;
@@ -111,6 +126,7 @@ export async function getServerSideProps(context) {
 
   $("a").each(function (index, element) {
     $(this).attr("target", "_self");
+    $(this).attr("genie-link", "true");
 
     if (this.attribs["href"]?.startsWith("https://")) {
       $(this).attr(
@@ -135,6 +151,12 @@ export async function getServerSideProps(context) {
 
   $(`img`).each(function (index, element) {
     if (this.attribs["src"]?.startsWith("https://")) return;
+
+    if (this.attribs["src"]?.startsWith("//")) {
+      $(this).attr("src", `https:${this.attribs["src"]}`);
+
+      return;
+    }
 
     $(this).attr("src", `https://${sourceDomain}${this.attribs["src"]}`);
     $(this).removeAttr("srcset");
