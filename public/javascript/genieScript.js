@@ -82,7 +82,13 @@ genieModeMemoButton?.addEventListener("click", async () => {
 
   copiedGenieTag.appendChild(br);
   copiedGenieTag.classList.remove("hide");
-  sideEditor.innerHTML += `<div onclick="location.href='${window.location.origin}${window.location.pathname}${window.location.search}#genie-id-${genieId}'">${copiedGenieTag.outerHTML}</div>`;
+  sideEditor.innerHTML += `<div
+    onclick="location.href='${window.location.origin}${window.location.pathname}${window.location.search}#genie-id-${genieId}'" 
+    onmouseover="this.classList.add('highlight')";
+    onmouseout="this.classList.remove('highlight')";
+  >
+    ${copiedGenieTag.outerHTML}
+  </div>`;
 
   previousClickEle?.classList.remove("element-click");
   hoverModal.classList.remove("show");
