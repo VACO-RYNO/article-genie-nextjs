@@ -126,13 +126,6 @@ const Brand = styled.div`
   margin-left: 10px;
   display: flex;
   align-items: center;
-
-  h1 {
-    margin-left: 10px;
-    font-style: italic;
-    color: #6466ff;
-    font-size: 28px;
-  }
 `;
 
 const AddressBarWrapper = styled.div`
