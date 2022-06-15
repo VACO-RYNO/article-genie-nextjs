@@ -61,6 +61,7 @@ const CornerButton = styled.div`
   color: #f7f7f7;
   font-weight: 700;
   font-size: 2rem;
+  z-index: 9999999;
 
   :hover {
     border: solid 3px #fc7ebe;
