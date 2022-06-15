@@ -15,14 +15,40 @@ function GenieSideBar() {
   const loginData = useRecoilValue(loginState);
   const [articleData, setArticleData] = useState({});
   const { showModal } = useModal();
+  const [isFetchDone, setIsFetchDone] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        const userId = loginData.data._id;
+
+        delete articleData._id;
+        await updateArticle(userId, currentArticleId, articleData);
+      } catch {
+        showModal({
+          modalType: "ErrorModal",
+          modalProps: {
+            message: "작업을 실패했습니다.",
+          },
+        });
+      }
+    }, 20000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [loginData, currentArticleId, articleData]);
 
   useEffect(() => {
     (async () => {
       try {
+        setIsFetchDone(false);
+
         const userId = loginData?.data._id;
         const { data } = await getArticle(userId, currentArticleId);
 
         setArticleData(data);
+        setIsFetchDone(true);
       } catch {
         showModal({
           modalType: "ErrorModal",
@@ -32,7 +58,7 @@ function GenieSideBar() {
         });
       }
     })();
-  }, [loginData, currentArticleId]);
+  }, [loginData, currentArticleId, isSideBarOpen]);
 
   const handleArticleSaveButtonClick = async () => {
     try {
@@ -52,17 +78,19 @@ function GenieSideBar() {
 
   return (
     <SideBar sideBar={isSideBarOpen}>
-      <TitleInput
-        name="article-title"
-        placeholder="아티클 제목"
-        defaultValue={articleData.title}
-        onChange={e => {
-          setArticleData(data => {
-            data.title = e.target.value;
-            return data;
-          });
-        }}
-      />
+      {isFetchDone && (
+        <TitleInput
+          name="article-title"
+          placeholder="아티클 제목"
+          defaultValue={articleData.title}
+          onChange={e => {
+            setArticleData(data => {
+              data.title = e.target.value;
+              return data;
+            });
+          }}
+        />
+      )}
       <div
         id="side-editor"
         contentEditable="true"
