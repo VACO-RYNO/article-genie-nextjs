@@ -6,6 +6,7 @@ import Head from "next/head";
 import parse from "html-react-parser";
 import styled from "styled-components";
 import Script from "next/script";
+import config from "../../lib/config";
 
 import GenieSideBar from "../../components/GenieSideBar";
 import GenieCornerButton from "../../components/GenieCornerButton";
@@ -93,7 +94,7 @@ export async function getServerSideProps(context) {
     id++;
   });
 
-  if (sourceDomain === "stackoverflow.com") {
+  if (sourceDomain !== "expressjs.com") {
     $(`header`).first().css("position", "sticky !important");
   }
 
@@ -106,6 +107,24 @@ export async function getServerSideProps(context) {
     if (this.attribs["href"]?.startsWith("https://")) return;
 
     $(this).attr("href", `https://${sourceDomain}${this.attribs["href"]}`);
+  });
+
+  $("a").each(function (index, element) {
+    $(this).attr("target", "_self");
+
+    if (this.attribs["href"]?.startsWith("https://")) {
+      $(this).attr(
+        "href",
+        `${config.HOST_URL}/genie-mode?url=${this.attribs["href"]}`,
+      );
+
+      return;
+    }
+
+    $(this).attr(
+      "href",
+      `${config.HOST_URL}/genie-mode?url=https://${sourceDomain}${this.attribs["href"]}`,
+    );
   });
 
   $(`script`).each(function (index, element) {

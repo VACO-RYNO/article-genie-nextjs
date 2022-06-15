@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import sideBarState from "../../lib/recoil/sideBar";
 import currentArticleIdState from "../../lib/recoil/currentArticleId/atom";
 import loginState from "../../lib/recoil/auth";
-import { getArticle, updateArticle } from "../../lib/api";
+import {
+  getArticle,
+  updateArticle,
+  updateLastVisitedSite,
+} from "../../lib/api";
 import useModal from "../../lib/hooks/useModal";
 
 function GenieSideBar() {
@@ -48,6 +53,9 @@ function GenieSideBar() {
     };
   }, [loginData, currentArticleId, articleData]);
 
+  const userId = loginData?.data._id;
+  const originUrl = useRouter().query.url;
+
   useEffect(() => {
     (async () => {
       try {
@@ -84,6 +92,7 @@ function GenieSideBar() {
 
       delete articleData._id;
       await updateArticle(userId, currentArticleId, articleData);
+      await updateLastVisitedSite(userId, currentArticleId, originUrl);
     } catch {
       showModal({
         modalType: "ErrorModal",
