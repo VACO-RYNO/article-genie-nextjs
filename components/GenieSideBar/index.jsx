@@ -53,9 +53,6 @@ function GenieSideBar() {
     };
   }, [loginData, currentArticleId, articleData]);
 
-  const userId = loginData?.data._id;
-  const originUrl = useRouter().query.url;
-
   useEffect(() => {
     (async () => {
       try {
@@ -82,6 +79,7 @@ function GenieSideBar() {
   const handleArticleSaveButtonClick = async () => {
     try {
       const userId = loginData.data._id;
+      const originUrl = useRouter().query.url;
 
       setArticleData(data => {
         const sideEditor = document.getElementById("side-editor");
