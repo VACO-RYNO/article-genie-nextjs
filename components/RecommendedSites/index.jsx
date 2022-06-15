@@ -9,7 +9,7 @@ function RecommendedSites() {
       <SiteListWrapper>
         <SiteList siteTheme={"News"} />
         <SiteList siteTheme={"Tech"} />
-        <SiteList />
+        <SiteList siteTheme={"Journal"} />
       </SiteListWrapper>
     </Wrapper>
   );
