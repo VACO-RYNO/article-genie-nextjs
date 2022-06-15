@@ -1,4 +1,4 @@
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
 import cheerio from "cheerio";
 import { useEffect } from "react";
@@ -15,13 +15,15 @@ import useModal from "../../lib/hooks/useModal";
 import sideBarState from "../../lib/recoil/sideBar";
 import { isLoginState } from "../../lib/recoil/auth";
 import { createRecentSite } from "../../lib/api";
-import { getCookies } from "cookies-next";
 import { useRouter } from "next/router";
+import currentArticleIdState from "../../lib/recoil/currentArticleId/atom";
+import { getCookie, getCookies } from "cookies-next";
 
 export default function GenieModePage({ headString, bodyString }) {
   const { showModal } = useModal();
-  const isSideBarOpen = useRecoilValue(sideBarState);
+  const [isSideBarOpen, setIsSideBarOpen] = useRecoilState(sideBarState);
   const isLogin = useRecoilValue(isLoginState);
+  const setCurrentArticleId = useSetRecoilState(currentArticleIdState);
   const parseHeadJsx = headString ? parse(headString) : "";
   const router = useRouter();
 
@@ -37,6 +39,15 @@ export default function GenieModePage({ headString, bodyString }) {
       return () => router.push("/");
     }
 
+    const currentArticleId = getCookie("currentArticleId");
+
+    if (currentArticleId) {
+      setIsSideBarOpen(true);
+      setCurrentArticleId(currentArticleId);
+    }
+  }, []);
+
+  useEffect(() => {
     const genieModeLinkButton = document.getElementById("genie-mode-link");
     const genieModeMemoButton = document.getElementById("genie-mode-memo");
 

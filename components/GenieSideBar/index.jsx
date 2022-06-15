@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+import { setCookies } from "cookies-next";
 
 import sideBarState from "../../lib/recoil/sideBar";
 import currentArticleIdState from "../../lib/recoil/currentArticleId/atom";
@@ -20,6 +21,7 @@ function GenieSideBar() {
   const [articleData, setArticleData] = useState({});
   const { showModal } = useModal();
   const [isFetchDone, setIsFetchDone] = useState(false);
+  const originUrl = useRouter().query.url;
 
   useEffect(() => {
     const interval = setInterval(async () => {
@@ -27,6 +29,7 @@ function GenieSideBar() {
         if (currentArticleId) {
           const userId = loginData?.data._id;
 
+          setCookies("currentArticleId", currentArticleId);
           setArticleData(data => {
             const sideEditor = document.getElementById("side-editor");
 
@@ -79,7 +82,6 @@ function GenieSideBar() {
   const handleArticleSaveButtonClick = async () => {
     try {
       const userId = loginData.data._id;
-      const originUrl = useRouter().query.url;
 
       setArticleData(data => {
         const sideEditor = document.getElementById("side-editor");
@@ -89,6 +91,7 @@ function GenieSideBar() {
       });
 
       delete articleData._id;
+
       await updateArticle(userId, currentArticleId, articleData);
       await updateLastVisitedSite(userId, currentArticleId, originUrl);
     } catch {

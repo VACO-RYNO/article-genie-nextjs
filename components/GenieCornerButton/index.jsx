@@ -1,10 +1,10 @@
 import { useRecoilState, useRecoilValue } from "recoil";
-
 import styled from "styled-components";
 
 import useModal from "../../lib/hooks/useModal";
 import sideBarState from "../../lib/recoil/sideBar";
 import { isLoginState } from "../../lib/recoil/auth";
+import { removeCookies } from "cookies-next";
 
 function GenieCornerButton() {
   const [isSideBarOpen, setIsSideBarOpen] = useRecoilState(sideBarState);
@@ -20,7 +20,8 @@ function GenieCornerButton() {
     }
 
     if (isSideBarOpen) {
-      return setIsSideBarOpen(false);
+      setIsSideBarOpen(false);
+      return removeCookies("currentArticleId");
     }
 
     return showModal({

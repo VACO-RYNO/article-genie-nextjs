@@ -76,12 +76,13 @@ genieModeLinkButton?.addEventListener("click", async () => {
 });
 
 genieModeMemoButton?.addEventListener("click", async () => {
+  const genieId = genieTag.getAttribute("genie-id");
   const copiedGenieTag = genieTag.cloneNode(true);
   const br = document.createElement("br");
 
   copiedGenieTag.appendChild(br);
   copiedGenieTag.classList.remove("hide");
-  sideEditor.innerHTML += copiedGenieTag.outerHTML;
+  sideEditor.innerHTML += `<div onclick="location.href='${window.location.origin}${window.location.pathname}${window.location.search}#genie-id-${genieId}'">${copiedGenieTag.outerHTML}</div>`;
 
   previousClickEle?.classList.remove("element-click");
   hoverModal.classList.remove("show");
