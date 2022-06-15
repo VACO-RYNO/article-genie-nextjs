@@ -101,12 +101,16 @@ const NewArticleButton = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 15px;
-  height: 80%;
+  min-width: 60px;
+  min-height: 80px;
+  margin-right: 15px;
+  margin-bottom: 30px;
+  border-radius: 4px;
+  box-shadow: 0 6px 10px 0 rgb(0 0 0 / 8%), 0 0 2px 0 rgb(0 0 0 / 15%);
+  overflow: hidden;
 
   :hover {
-    background-color: #fc7ebe;
-    opacity: 0.5;
+    background-color: #a5e9ff;
   }
 `;
 

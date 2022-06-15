@@ -79,7 +79,7 @@ const CloseButton = styled(IoMdClose)`
   left: 50%;
   width: 25px;
   height: 25px;
-  color: #313134;
+  color: #4a4a4f;
   cursor: pointer;
 `;
 
