@@ -55,15 +55,17 @@ function MyArticlesList() {
         &#43;
       </NewArticleButton>
       {data.map(article => (
-        <MyArticleListEntry
-          key={article._id}
-          title={article.title}
-          onClick={() => {
-            setCurrentArticleId(article._id);
-            hideModal();
-            setIsSideBarOpen(true);
-          }}
-        ></MyArticleListEntry>
+        <MyArticleEntryWrapper>
+          <MyArticleListEntry
+            key={article._id}
+            title={article.title}
+            onClick={() => {
+              setCurrentArticleId(article._id);
+              hideModal();
+              setIsSideBarOpen(true);
+            }}
+          />
+        </MyArticleEntryWrapper>
       ))}
     </MyArticlesWrapper>
   );
@@ -72,11 +74,26 @@ function MyArticlesList() {
 const MyArticlesWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-auto-rows: minmax(180px, auto);
+  grid-auto-rows: minmax(200px, auto);
   padding: 1.5rem;
   height: 70vh;
+  padding: 1rem;
   overflow: hidden;
   overflow-y: scroll;
+`;
+
+const MyArticleEntryWrapper = styled.div`
+  min-width: 60px;
+  min-height: 80px;
+  margin-right: 15px;
+  margin-bottom: 30px;
+  border-radius: 4px;
+  box-shadow: 0 6px 10px 0 rgb(0 0 0 / 8%), 0 0 2px 0 rgb(0 0 0 / 15%);
+  overflow: hidden;
+
+  :hover {
+    background-color: #a5e9ff;
+  }
 `;
 
 const NewArticleButton = styled.div`
@@ -84,8 +101,8 @@ const NewArticleButton = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1px solid pink;
   margin: 15px;
+  height: 80%;
 
   :hover {
     background-color: #fc7ebe;
