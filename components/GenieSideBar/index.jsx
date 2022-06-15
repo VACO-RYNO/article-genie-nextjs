@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useRecoilValue } from "recoil";
-import { useQuery } from "react-query";
 import styled from "styled-components";
 
 import sideBarState from "../../lib/recoil/sideBar";
@@ -10,9 +9,9 @@ import { getArticle, updateArticle } from "../../lib/api";
 import useModal from "../../lib/hooks/useModal";
 
 function GenieSideBar() {
+  const loginData = useRecoilValue(loginState);
   const isSideBarOpen = useRecoilValue(sideBarState);
   const currentArticleId = useRecoilValue(currentArticleIdState);
-  const loginData = useRecoilValue(loginState);
   const [articleData, setArticleData] = useState({});
   const { showModal } = useModal();
   const [isFetchDone, setIsFetchDone] = useState(false);
@@ -20,10 +19,20 @@ function GenieSideBar() {
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        const userId = loginData.data._id;
+        if (currentArticleId) {
+          const userId = loginData?.data._id;
 
-        delete articleData._id;
-        await updateArticle(userId, currentArticleId, articleData);
+          setArticleData(data => {
+            const sideEditor = document.getElementById("side-editor");
+
+            data.contents = sideEditor.innerHTML;
+            return data;
+          });
+
+          delete articleData._id;
+
+          await updateArticle(userId, currentArticleId, articleData);
+        }
       } catch {
         showModal({
           modalType: "ErrorModal",
@@ -32,7 +41,7 @@ function GenieSideBar() {
           },
         });
       }
-    }, 20000);
+    }, 3000);
 
     return () => {
       clearInterval(interval);
@@ -42,13 +51,15 @@ function GenieSideBar() {
   useEffect(() => {
     (async () => {
       try {
-        setIsFetchDone(false);
+        if (currentArticleId) {
+          setIsFetchDone(false);
 
-        const userId = loginData?.data._id;
-        const { data } = await getArticle(userId, currentArticleId);
+          const userId = loginData?.data._id;
+          const { data } = await getArticle(userId, currentArticleId);
 
-        setArticleData(data);
-        setIsFetchDone(true);
+          setArticleData(data);
+          setIsFetchDone(true);
+        }
       } catch {
         showModal({
           modalType: "ErrorModal",
@@ -63,6 +74,13 @@ function GenieSideBar() {
   const handleArticleSaveButtonClick = async () => {
     try {
       const userId = loginData.data._id;
+
+      setArticleData(data => {
+        const sideEditor = document.getElementById("side-editor");
+
+        data.contents = sideEditor.innerHTML;
+        return data;
+      });
 
       delete articleData._id;
       await updateArticle(userId, currentArticleId, articleData);
@@ -94,15 +112,8 @@ function GenieSideBar() {
       <div
         id="side-editor"
         contentEditable="true"
-        onInput={e => {
-          setArticleData(data => {
-            data.contents = e.target.innerHTML;
-            return data;
-          });
-        }}
-      >
-        {articleData.contents}
-      </div>
+        dangerouslySetInnerHTML={{ __html: articleData.contents }}
+      ></div>
       <button onClick={handleArticleSaveButtonClick}>저장</button>
     </SideBar>
   );
