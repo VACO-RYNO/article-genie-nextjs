@@ -13,6 +13,7 @@ function Profile() {
 
   const handleLogout = () => {
     removeCookies("loginData");
+    removeCookies("currentArticleId");
     setLoginState(null);
 
     hideModal();
