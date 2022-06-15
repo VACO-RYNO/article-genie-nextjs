@@ -26,7 +26,7 @@ function GenieSideBar() {
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
-        if (currentArticleId) {
+        if (isSideBarOpen && currentArticleId) {
           const userId = loginData?.data._id;
 
           setCookies("currentArticleId", currentArticleId);
@@ -40,6 +40,7 @@ function GenieSideBar() {
           delete articleData._id;
 
           await updateArticle(userId, currentArticleId, articleData);
+          await updateLastVisitedSite(userId, currentArticleId, originUrl);
         }
       } catch {
         showModal({
@@ -54,55 +55,43 @@ function GenieSideBar() {
     return () => {
       clearInterval(interval);
     };
-  }, [loginData, currentArticleId, articleData]);
+  }, [loginData, currentArticleId, articleData, isSideBarOpen]);
 
   useEffect(() => {
     (async () => {
+      const userId = loginData?.data._id;
+
       try {
-        if (currentArticleId) {
+        if (isSideBarOpen && currentArticleId) {
           setIsFetchDone(false);
 
-          const userId = loginData?.data._id;
           const { data } = await getArticle(userId, currentArticleId);
 
           setArticleData(data);
           setIsFetchDone(true);
+        } else if (currentArticleId) {
+          setArticleData(data => {
+            const sideEditor = document.getElementById("side-editor");
+
+            data.contents = sideEditor.innerHTML;
+            return data;
+          });
+
+          delete articleData._id;
+
+          await updateArticle(userId, currentArticleId, articleData);
+          await updateLastVisitedSite(userId, currentArticleId, originUrl);
         }
       } catch {
         showModal({
           modalType: "ErrorModal",
           modalProps: {
-            message: "데이터를 불러오는데 실패했습니다.",
+            message: "작업을 실패했습니다.",
           },
         });
       }
     })();
   }, [loginData, currentArticleId, isSideBarOpen]);
-
-  const handleArticleSaveButtonClick = async () => {
-    try {
-      const userId = loginData.data._id;
-
-      setArticleData(data => {
-        const sideEditor = document.getElementById("side-editor");
-
-        data.contents = sideEditor.innerHTML;
-        return data;
-      });
-
-      delete articleData._id;
-
-      await updateArticle(userId, currentArticleId, articleData);
-      await updateLastVisitedSite(userId, currentArticleId, originUrl);
-    } catch {
-      showModal({
-        modalType: "ErrorModal",
-        modalProps: {
-          message: "작업을 실패했습니다.",
-        },
-      });
-    }
-  };
 
   return (
     <SideBar sideBar={isSideBarOpen}>
@@ -124,7 +113,6 @@ function GenieSideBar() {
         contentEditable="true"
         dangerouslySetInnerHTML={{ __html: articleData.contents }}
       ></div>
-      <button onClick={handleArticleSaveButtonClick}>저장</button>
     </SideBar>
   );
 }
