@@ -1,12 +1,11 @@
 import { useRecoilState, useSetRecoilState, useRecoilValue } from "recoil";
 import axios from "axios";
-import cheerio from "cheerio";
 import { useEffect } from "react";
 import Head from "next/head";
 import parse from "html-react-parser";
 import styled from "styled-components";
 import Script from "next/script";
-import config from "../../lib/config";
+import { getCookie, getCookies } from "cookies-next";
 
 import GenieSideBar from "../../components/GenieSideBar";
 import GenieCornerButton from "../../components/GenieCornerButton";
@@ -17,7 +16,7 @@ import { isLoginState } from "../../lib/recoil/auth";
 import { createRecentSite } from "../../lib/api";
 import { useRouter } from "next/router";
 import currentArticleIdState from "../../lib/recoil/currentArticleId/atom";
-import { getCookie, getCookies } from "cookies-next";
+import getManipulatedDom from "../../lib/domManipulation";
 
 export default function GenieModePage({ headString, bodyString }) {
   const { showModal } = useModal();
@@ -105,94 +104,30 @@ export async function getServerSideProps(context) {
   const { url } = context.query;
   let { loginData } = getCookies(context);
 
-  if (!url) return { props: { headString: null, htmlString: null } };
+  if (!url) return { props: { headString: null, bodyString: null } };
 
-  const sourceDomain = url.slice(`https://`.length).split("/").shift();
-  const { data } = await axios.get(url, {
-    timeout: 2500,
-  });
-  const $ = cheerio.load(data);
+  try {
+    const { data } = await axios.get(url, {
+      timeout: 2500,
+    });
 
-  let id = 1;
+    const sourceDomain = url.slice(`https://`.length).split("/").shift();
+    const { headString, bodyString } = getManipulatedDom(data, sourceDomain);
 
-  $("p").each(function (i, ele) {
-    $(this).attr("genie-id", `${id}`);
-    id++;
-  });
-
-  if (sourceDomain !== "expressjs.com" && sourceDomain !== "www.latimes.com") {
-    $(`header`).first().css("position", "sticky !important");
-  }
-
-  $("header").first().css("top", "68px !important");
-  $("header").first().css("z-index", "999");
-
-  $(`div[class="inner_header"]`).first().css("top", "68px !important");
-
-  $(`link`).each(function (index, element) {
-    if (this.attribs["href"]?.startsWith("https://")) return;
-
-    $(this).attr("href", `https://${sourceDomain}${this.attribs["href"]}`);
-  });
-
-  $("a").each(function (index, element) {
-    $(this).attr("target", "_self");
-    $(this).attr("genie-link", "true");
-
-    if (this.attribs["href"]?.startsWith("https://")) {
-      $(this).attr(
-        "href",
-        `${config.HOST_URL}/genie-mode?url=${this.attribs["href"]}`,
-      );
-
-      return;
+    if (loginData) {
+      loginData = JSON.parse(loginData);
+      await createRecentSite(loginData.data._id, url, loginData.accessToken);
     }
 
-    $(this).attr(
-      "href",
-      `${config.HOST_URL}/genie-mode?url=https://${sourceDomain}${this.attribs["href"]}`,
-    );
-  });
-
-  $(`script`).each(function (index, element) {
-    if (this.attribs["src"]?.startsWith("https://")) return;
-
-    $(this).attr("src", `https://${sourceDomain}${this.attribs["src"]}`);
-  });
-
-  $(`img`).each(function (index, element) {
-    if (this.attribs["src"]?.startsWith("https://")) return;
-
-    if (this.attribs["src"]?.startsWith("//")) {
-      $(this).attr("src", `https:${this.attribs["src"]}`);
-
-      return;
-    }
-
-    $(this).attr("src", `https://${sourceDomain}${this.attribs["src"]}`);
-    $(this).removeAttr("srcset");
-  });
-
-  $("body").append(
-    `<div id="genie-hover-modal">
-      <button class="modal-button" id="genie-mode-link">링크 생성</button>
-      <button class="modal-button" id="genie-mode-memo">메모</button>
-      <p class="hide"></p>
-    </div>
-   `,
-  );
-
-  if (loginData) {
-    loginData = JSON.parse(loginData);
-    await createRecentSite(loginData.data._id, url, loginData.accessToken);
+    return {
+      props: {
+        headString,
+        bodyString,
+      },
+    };
+  } catch (error) {
+    return { props: { headString: null, bodyString: null } };
   }
-
-  return {
-    props: {
-      headString: $("head").html(),
-      bodyString: $("body").html(),
-    },
-  };
 }
 
 const GeniePageWrapper = styled.div`

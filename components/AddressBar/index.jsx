@@ -76,13 +76,13 @@ const AddressBarInput = styled.input`
   border: none !important;
 
   &:focus {
-    outline: none;
+    outline: none !important;
   }
 
   &::placeholder {
     font-size: 14px;
     font-weight: 400;
-    color: #6466ff;
+    color: #6466ff !important;
   }
 `;
 
