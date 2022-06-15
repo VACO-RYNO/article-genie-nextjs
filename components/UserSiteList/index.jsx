@@ -42,6 +42,12 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  border-radius: 4px;
+  box-shadow: 0 6px 10px 0 rgb(0 0 0 / 8%), 0 0 2px 0 rgb(0 0 0 / 15%);
+  margin-top: 13px;
+  min-width: 800px;
+  min-height: 308px;
+  padding: 25px 0 30px;
 `;
 
 export default UserSiteList;

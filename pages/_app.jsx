@@ -8,6 +8,7 @@ import GlobalModal from "../components/GlobalModal";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import GlobalStyle from "../components/shared/GlobalStyle";
 
 function MyApp({ Component, pageProps }) {
   const queryClient = new QueryClient({
@@ -26,6 +27,7 @@ function MyApp({ Component, pageProps }) {
             <ErrorBoundary
               fallbackRender={({ error }) => <div>{error.message}</div>}
             >
+              <GlobalStyle />
               <GlobalModal />
               <AppHeader />
               <Main>
