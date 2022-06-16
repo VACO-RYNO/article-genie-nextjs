@@ -65,7 +65,7 @@ function GenieSideBar() {
           },
         });
       }
-    }, 20000);
+    }, 2000);
 
     return () => {
       clearInterval(interval);
@@ -140,6 +140,7 @@ function GenieSideBar() {
             }}
           />
         )}
+        <ViewGap />
         <div
           id="side-editor"
           contentEditable="true"
@@ -177,9 +178,15 @@ const SideBar = styled.div`
   }
 `;
 
+const ViewGap = styled.div`
+  width: 100%;
+  height: 30px;
+  background-color: white;
+`;
+
 const TitleInput = styled.input`
   width: 400px;
-  margin-top: 60px;
+  margin-top: 80px;
   margin-left: 50px;
   border: 0;
   padding: 0;
@@ -196,10 +203,11 @@ const PrintArea = styled.div`
 `;
 
 const ExportButton = styled(BsFillFileEarmarkPdfFill)`
+  position: absolute;
+  top: 30px;
+  right: 30px;
   width: 30px;
   height: 30px;
-  margin-top: 50px;
-  margin-left: 50px;
   color: #bcbcbc;
   cursor: pointer;
 `;

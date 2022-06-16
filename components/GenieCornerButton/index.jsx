@@ -87,6 +87,7 @@ const CornerButton = styled.div`
 const AddIcon = styled(IoAdd)`
   width: 40px;
   height: 40px;
+  transition: transform 0.2s ease-in 0s;
   ${props => (props.isActive ? "transform: rotate(45deg);" : "null;")}
 `;
 
