@@ -80,7 +80,7 @@ function GenieSideBar() {
         } else if (currentArticleId) {
           setArticleData(data => {
             const sideEditor = document.getElementById("side-editor");
-            console.log(sideEditor.innerHTML);
+
             data.contents = sideEditor.innerHTML;
 
             return data;
