@@ -1,7 +1,8 @@
 import { useSetRecoilState, useRecoilValue } from "recoil";
 import { useQuery } from "react-query";
-import styled from "styled-components";
 import { useRouter } from "next/router";
+import styled from "styled-components";
+import { IoAdd } from "react-icons/io5";
 
 import useModal from "../../lib/hooks/useModal";
 import loginState from "../../lib/recoil/auth";
@@ -53,7 +54,7 @@ function MyArticlesList() {
   return (
     <MyArticlesWrapper>
       <NewArticleButton onClick={handleNewArticleButtonClick}>
-        &#43;
+        <AddIcon />
       </NewArticleButton>
       {data.map(article => (
         <MyArticleEntryWrapper>
@@ -113,6 +114,11 @@ const NewArticleButton = styled.div`
   :hover {
     background-color: #a5e9ff;
   }
+`;
+
+const AddIcon = styled(IoAdd)`
+  width: 40px;
+  height: 40px;
 `;
 
 export default MyArticlesList;
