@@ -40,7 +40,7 @@ export default function GenieModePage({ headString, bodyString }) {
 
     const currentArticleId = getCookie("currentArticleId");
 
-    if (currentArticleId) {
+    if (isLogin && currentArticleId) {
       setIsSideBarOpen(true);
       setCurrentArticleId(currentArticleId);
     }

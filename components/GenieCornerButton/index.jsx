@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { IoAdd } from "react-icons/io5";
@@ -16,9 +16,15 @@ function GenieCornerButton() {
   const modalData = useRecoilValue(modalState);
   const { showModal, hideModal } = useModal();
 
-  const handleClick = () => {
-    setIsActive(current => !current);
+  useEffect(() => {
+    if (isSideBarOpen || modalData?.modalType === "MyArticlesModal") {
+      setIsActive(true);
+    } else {
+      setIsActive(false);
+    }
+  }, [isSideBarOpen, modalData]);
 
+  const handleClick = () => {
     if (!isLogin) {
       return showModal({
         modalType: "LoginModal",
@@ -61,8 +67,8 @@ const CornerButton = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   border-radius: 15px;
   background-color: #7e80ff;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
@@ -70,9 +76,11 @@ const CornerButton = styled.div`
   font-weight: 700;
   font-size: 2rem;
   z-index: 9999999;
+  opacity: 0.5;
 
   :hover {
-    border: solid 3px #fc7ebe;
+    opacity: 1;
+    cursor: pointer;
   }
 `;
 

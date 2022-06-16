@@ -7,8 +7,7 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import Heading from "../shared/Heading";
 import logo from "../../public/images/genie-logo.png";
-import { BsPersonCircle } from "react-icons/bs";
-import { BsShareFill } from "react-icons/bs";
+import { BsPersonCircle, BsShareFill } from "react-icons/bs";
 
 import useModal from "../../lib/hooks/useModal";
 import { isLoginState } from "../../lib/recoil/auth";
@@ -171,6 +170,7 @@ const ProfileIcon = styled(BsPersonCircle)`
   width: 40px;
   margin-right: 6%;
   color: #bcbcbc;
+  cursor: pointer;
 
   :hover {
     color: #6466ff;
@@ -181,6 +181,7 @@ const ShareIcon = styled(BsShareFill)`
   width: 28px;
   height: 28px;
   color: #bcbcbc;
+  cursor: pointer;
 
   :hover {
     color: #6466ff;
