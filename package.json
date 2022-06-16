@@ -24,6 +24,7 @@
     "react-error-boundary": "^3.1.4",
     "react-icons": "^4.4.0",
     "react-query": "^3.39.1",
+    "react-to-print": "^2.14.7",
     "recoil": "^0.7.3",
     "styled-components": "^5.3.5"
   },

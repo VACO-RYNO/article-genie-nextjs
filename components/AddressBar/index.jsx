@@ -91,6 +91,7 @@ const SearchIcon = styled(BsSearch)`
   width: 21px;
   height: 21px;
   color: #6466ff;
+  cursor: pointer;
 `;
 
 export default AddressBar;

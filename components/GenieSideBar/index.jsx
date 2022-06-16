@@ -1,8 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRecoilValue } from "recoil";
 import { useRouter } from "next/router";
-import styled from "styled-components";
 import { setCookies } from "cookies-next";
+import ReactToPrint from "react-to-print";
+import styled from "styled-components";
+import { BsFillFileEarmarkPdfFill } from "react-icons/bs";
 
 import sideBarState from "../../lib/recoil/sideBar";
 import currentArticleIdState from "../../lib/recoil/currentArticleId/atom";
@@ -15,12 +17,13 @@ import {
 import useModal from "../../lib/hooks/useModal";
 
 function GenieSideBar() {
+  const componentRef = useRef();
   const loginData = useRecoilValue(loginState);
   const isSideBarOpen = useRecoilValue(sideBarState);
   const currentArticleId = useRecoilValue(currentArticleIdState);
   const [articleData, setArticleData] = useState({});
-  const { showModal } = useModal();
   const [isFetchDone, setIsFetchDone] = useState(false);
+  const { showModal } = useModal();
   const originUrl = useRouter().query.url;
 
   useEffect(() => {
@@ -111,25 +114,31 @@ function GenieSideBar() {
 
   return (
     <SideBar sideBar={isSideBarOpen}>
-      {isFetchDone && (
-        <TitleInput
-          name="article-title"
-          placeholder="제목을 입력하세요."
-          defaultValue={articleData.title}
-          onChange={e => {
-            setArticleData(data => {
-              data.title = e.target.value;
-              return data;
-            });
-          }}
-        />
-      )}
-      <div
-        id="side-editor"
-        contentEditable="true"
-        placeholder="내용을 입력하세요."
-        dangerouslySetInnerHTML={{ __html: articleData.contents }}
-      ></div>
+      <ReactToPrint
+        trigger={() => <ExportButton />}
+        content={() => componentRef.current}
+      />
+      <PrintArea ref={componentRef}>
+        {isFetchDone && (
+          <TitleInput
+            name="article-title"
+            placeholder="제목을 입력하세요."
+            defaultValue={articleData.title}
+            onChange={e => {
+              setArticleData(data => {
+                data.title = e.target.value;
+                return data;
+              });
+            }}
+          />
+        )}
+        <div
+          id="side-editor"
+          contentEditable="true"
+          placeholder="내용을 입력하세요."
+          dangerouslySetInnerHTML={{ __html: articleData.contents }}
+        ></div>
+      </PrintArea>
     </SideBar>
   );
 }
@@ -169,6 +178,22 @@ const TitleInput = styled.input`
   outline: none;
   font-size: 2em;
   color: #6466ff;
+`;
+
+const PrintArea = styled.div`
+  @page {
+    size: A4;
+    margin: 70px;
+  }
+`;
+
+const ExportButton = styled(BsFillFileEarmarkPdfFill)`
+  width: 30px;
+  height: 30px;
+  margin-top: 50px;
+  margin-left: 570px;
+  color: #bcbcbc;
+  cursor: pointer;
 `;
 
 export default GenieSideBar;
