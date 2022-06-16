@@ -70,7 +70,7 @@ MyArticleListEntry.propTypes = {
 
 const Wrapper = styled.div`
   position: relative;
-  width: 20rem;
+  width: 320px;
   border-radius: 8px;
   box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px 0px;
   transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s;
@@ -113,21 +113,19 @@ const TextWrapper = styled.div`
 `;
 
 const PreviewWrapper = styled.div`
-  flex: 1 1 0%;
+  height: 100px;
 `;
 
 const Preview = styled.p`
   margin: 0px 0px 1.5rem;
-  word-break: break-word;
-  overflow-wrap: break-word;
   font-size: 0.875rem;
   line-height: 1.5;
-  height: 80px;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
   text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 `;
 
 const DeleteButton = styled(IoMdClose)`
