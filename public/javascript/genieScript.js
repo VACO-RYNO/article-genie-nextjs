@@ -1,11 +1,13 @@
-const pList = document.querySelectorAll("p");
-const spanList = document.querySelectorAll("span");
-const tdList = document.querySelectorAll("td");
+const pList = document.querySelectorAll(`p[genie-tag="true"]`);
+const spanList = document.querySelectorAll(`span[genie-tag="true"]`);
+const tdList = document.querySelectorAll(`td[genie-tag="true"]`);
 const aList = document.querySelectorAll(`a[genie-link="true"]`);
+
+const hoverModal = document.getElementById("genie-hover-modal");
 const genieModeLinkButton = document.getElementById("genie-mode-link");
 const genieModeMemoButton = document.getElementById("genie-mode-memo");
+
 const sideEditor = document.getElementById("side-editor");
-const hoverModal = document.getElementById("genie-hover-modal");
 const genieTag = document.querySelector("#genie-hover-modal > p");
 
 let previousHash = "";
