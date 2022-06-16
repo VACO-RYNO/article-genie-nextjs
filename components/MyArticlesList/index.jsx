@@ -52,31 +52,48 @@ function MyArticlesList() {
   };
 
   return (
-    <MyArticlesWrapper>
-      <NewArticleButton onClick={handleNewArticleButtonClick}>
-        <AddIcon />
-      </NewArticleButton>
-      {data.map(article => (
-        <MyArticleEntryWrapper>
-          <MyArticleListEntry
-            key={article._id}
-            title={article.title}
-            onClick={() => {
-              setCurrentArticleId(article._id);
-              hideModal();
-              setIsSideBarOpen(true);
-            }}
-          />
-        </MyArticleEntryWrapper>
-      ))}
-    </MyArticlesWrapper>
+    <ListWrapper>
+      <ListTitle>마이 아티클</ListTitle>
+      <MyArticlesWrapper>
+        <NewArticleButton onClick={handleNewArticleButtonClick}>
+          <AddIcon />
+        </NewArticleButton>
+        {data.map(article => (
+          <MyArticleEntryWrapper>
+            <MyArticleListEntry
+              key={article._id}
+              articleId={article._id}
+              title={article.title}
+              contents={article.contents}
+              ogImgSrc={article.lastVisitedSiteOgImgSrc}
+              onClick={() => {
+                setCurrentArticleId(article._id);
+                hideModal();
+                setIsSideBarOpen(true);
+              }}
+            />
+          </MyArticleEntryWrapper>
+        ))}
+      </MyArticlesWrapper>
+    </ListWrapper>
   );
 }
 
+const ListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+`;
+
+const ListTitle = styled.h1`
+  color: #6466ff;
+`;
+
 const MyArticlesWrapper = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-auto-rows: minmax(200px, auto);
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: minmax(400px, auto);
   padding: 1.5rem;
   height: 70vh;
   padding: 1rem;
@@ -84,35 +101,25 @@ const MyArticlesWrapper = styled.div`
   overflow-y: scroll;
 `;
 
-const MyArticleEntryWrapper = styled.div`
-  min-width: 60px;
-  min-height: 80px;
-  margin-right: 15px;
-  margin-bottom: 30px;
-  border-radius: 4px;
-  box-shadow: 0 6px 10px 0 rgb(0 0 0 / 8%), 0 0 2px 0 rgb(0 0 0 / 15%);
-  overflow: hidden;
-
-  :hover {
-    background-color: #a5e9ff;
-  }
-`;
+const MyArticleEntryWrapper = styled.div``;
 
 const NewArticleButton = styled.div`
+  margin: 1rem;
   display: flex;
   flex-direction: column;
+  width: 20rem;
+  height: 330px;
+  border-radius: 4px;
   align-items: center;
   justify-content: center;
   min-width: 60px;
   min-height: 80px;
-  margin-right: 15px;
-  margin-bottom: 30px;
-  border-radius: 4px;
   box-shadow: 0 6px 10px 0 rgb(0 0 0 / 8%), 0 0 2px 0 rgb(0 0 0 / 15%);
+  transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s;
   overflow: hidden;
 
   :hover {
-    background-color: #a5e9ff;
+    transform: translateY(-5%);
   }
 `;
 
