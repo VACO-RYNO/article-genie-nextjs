@@ -45,7 +45,7 @@ function MyArticlesList() {
       showModal({
         modalType: "ErrorModal",
         modalProps: {
-          message: "작업을 실패했습니다.",
+          message: "작업에 실패했습니다.",
         },
       });
     }

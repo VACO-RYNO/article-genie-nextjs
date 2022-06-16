@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import GlobalStyle from "../components/shared/GlobalStyle";
+import ErrorModal from "../components/ErrorModal";
 
 function MyApp({ Component, pageProps }) {
   const queryClient = new QueryClient({
@@ -25,7 +26,13 @@ function MyApp({ Component, pageProps }) {
         <QueryClientProvider client={queryClient}>
           <Suspense fallback={<h1>Loading...</h1>}>
             <ErrorBoundary
-              fallbackRender={({ error }) => <div>{error.message}</div>}
+              fallbackRender={({ error }) =>
+                process.env.NODE_ENV === "development" ? (
+                  console.error(error)
+                ) : (
+                  <ErrorModal>작업에 실패했습니다.</ErrorModal>
+                )
+              }
             >
               <GlobalStyle />
               <GlobalModal />
