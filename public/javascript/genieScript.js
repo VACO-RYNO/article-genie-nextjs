@@ -1,4 +1,6 @@
 const pList = document.querySelectorAll("p");
+const spanList = document.querySelectorAll("span");
+const tdList = document.querySelectorAll("td");
 const aList = document.querySelectorAll(`a[genie-link="true"]`);
 const genieModeLinkButton = document.getElementById("genie-mode-link");
 const genieModeMemoButton = document.getElementById("genie-mode-memo");
@@ -25,8 +27,8 @@ if (location.hash) {
   }
 }
 
-pList?.forEach(element => {
-  element.addEventListener("click", e => {
+const showHoverModalOnClick = tag => {
+  tag.addEventListener("click", e => {
     e.target.classList.remove("highlight");
     e.target.classList.add("element-click");
 
@@ -43,21 +45,33 @@ pList?.forEach(element => {
     genieTag.setAttribute("genie-id", e.target.getAttribute("genie-id"));
     genieTag.innerHTML = e.target.innerHTML;
   });
-});
+};
 
-window.addEventListener("mousemove", e => {
-  pList.forEach(pElement => {
-    const offset = pElement.getBoundingClientRect();
+const showHighlightsOnMousemove = tagList => {
+  window.addEventListener("mousemove", e => {
+    tagList.forEach(tag => {
+      const offset = tag.getBoundingClientRect();
 
-    if (
-      e.y > offset.top &&
-      e.y < offset.bottom &&
-      !hoverModal.classList.contains("show")
-    )
-      return pElement.classList.add("highlight");
+      if (
+        e.y > offset.top &&
+        e.y < offset.bottom &&
+        !hoverModal.classList.contains("show")
+      )
+        return tag.classList.add("highlight");
 
-    pElement.classList.remove("highlight");
+      tag.classList.remove("highlight");
+    });
   });
+};
+
+const allTagsList = [pList, spanList, tdList];
+
+allTagsList.forEach(tagList => {
+  tagList?.forEach(tag => {
+    showHoverModalOnClick(tag);
+  });
+
+  showHighlightsOnMousemove(tagList);
 });
 
 genieModeLinkButton?.addEventListener("click", async () => {
@@ -82,13 +96,15 @@ genieModeMemoButton?.addEventListener("click", async () => {
 
   copiedGenieTag.appendChild(br);
   copiedGenieTag.classList.remove("hide");
-  sideEditor.innerHTML += `<div
-    onclick="location.href='${window.location.origin}${window.location.pathname}${window.location.search}#genie-id-${genieId}'"
-    onmouseover="this.classList.add('highlight')";
-    onmouseout="this.classList.remove('highlight')";
-  >
-    ${copiedGenieTag.outerHTML}
-  </div>`;
+  sideEditor.innerHTML += `
+    <div
+      onclick="location.href='${window.location.origin}${window.location.pathname}${window.location.search}#genie-id-${genieId}'"
+      onmouseover="this.classList.add('highlight')";
+      onmouseout="this.classList.remove('highlight')";
+    >
+      ${copiedGenieTag.outerHTML}
+    </div>
+  `;
 
   previousClickEle?.classList.remove("element-click");
   hoverModal.classList.remove("show");
