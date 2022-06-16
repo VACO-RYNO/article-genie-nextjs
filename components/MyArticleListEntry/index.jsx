@@ -71,7 +71,7 @@ MyArticleListEntry.propTypes = {
 const Wrapper = styled.div`
   position: relative;
   width: 20rem;
-  border-radius: 4px;
+  border-radius: 8px;
   box-shadow: rgb(0 0 0 / 12%) 0px 4px 16px 0px;
   transition: box-shadow 0.25s ease-in 0s, transform 0.25s ease-in 0s;
   margin: 1rem;
