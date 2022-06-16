@@ -52,47 +52,54 @@ function AppHeader() {
   return (
     <>
       <Header>
-        <Link href="/">
-          <a>
-            <Brand>
-              <Image
-                className="img"
-                src={logo}
-                alt="brand-logo"
-                width={60}
-                height={41}
-              ></Image>
-              <Heading>Genie.</Heading>
-            </Brand>
-          </a>
-        </Link>
-        {router.pathname.includes("genie-mode") && (
-          <AddressBarWrapper>
-            <AddressBar />
-            <ShareIcon onClick={handleShareButtonClick} />
-          </AddressBarWrapper>
-        )}
-        {!isSSR && isLogin ? (
-          <ProfileIcon onClick={handleProfileClick} />
-        ) : (
-          <LoginButton onClick={handleLoginClick}>Login</LoginButton>
-        )}
+        <InnerHeader>
+          <Link href="/">
+            <a>
+              <Brand>
+                <Image
+                  className="brand-image"
+                  src={logo}
+                  alt="brand-logo"
+                  width={60}
+                  height={41}
+                ></Image>
+                <Heading>Genie.</Heading>
+              </Brand>
+            </a>
+          </Link>
+          {router.pathname.includes("genie-mode") && (
+            <AddressBarWrapper>
+              <AddressBar />
+              <ShareIcon onClick={handleShareButtonClick} />
+            </AddressBarWrapper>
+          )}
+          {!isSSR && isLogin ? (
+            <ProfileIcon onClick={handleProfileClick} />
+          ) : (
+            <LoginButton onClick={handleLoginClick}>Login</LoginButton>
+          )}
+        </InnerHeader>
       </Header>
     </>
   );
 }
 
 const Header = styled.div`
-  z-index: 1000;
   position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;
-  width: 100vw;
+  box-sizing: border-box;
+  background-color: white;
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
+  opacity: 0.8;
   height: 67px;
-  top: 0;
-  border-bottom: 1px solid #e6e6e6;
+  width: 100%;
+  transition: margin-top 0.5s ease 0s;
+  z-index: 99999;
 
   a {
     text-decoration: none;
@@ -100,22 +107,34 @@ const Header = styled.div`
   }
 `;
 
+const InnerHeader = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  @media (min-width: 1028px) {
+    margin-left: 11%;
+    margin-right: 11%;
+  }
+  margin-left: 2%;
+  margin-right: 2%;
+`;
+
 const LoginButton = styled.button`
-  position: absolute;
-  right: 29px;
-  width: 100px;
-  height: 20px;
-  background-color: #7e80ff;
-  border: 1px solid #7e80ff;
-  border-radius: 10px;
-  color: #f7f7f7;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 1rem 1rem;
-  margin: 0;
-  font-weight: 500;
+  border-radius: 8px;
+  background-color: #7e80ff;
+  border: 1px solid #7e80ff;
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  height: 2.5rem;
+  width: 7rem;
+  color: #f7f7f7;
+  font-size: 1rem;
+  font-weight: 700;
 
   :hover {
     background-color: #6466ff;
@@ -123,25 +142,39 @@ const LoginButton = styled.button`
 `;
 
 const Brand = styled.div`
-  margin-left: 10px;
   display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
+  height: 100%;
+  width: 100%;
+
+  .brand-image {
+    @media (max-width: 1024px) {
+      visibility: hidden;
+    }
+  }
 `;
 
 const AddressBarWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   align-items: center;
-  width: 80%;
-  margin-right: 50px;
+  height: 100%;
+  width: 90%;
+  padding-right: 2%;
 `;
 
 const ProfileIcon = styled(BsPersonCircle)`
-  position: absolute;
-  right: 60px;
-  width: 40px;
   height: 40px;
+  width: 40px;
+  margin-right: 6%;
   color: #bcbcbc;
+
+  :hover {
+    color: #6466ff;
+  }
 `;
 
 const ShareIcon = styled(BsShareFill)`

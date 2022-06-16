@@ -72,8 +72,9 @@ const AddressBarWrapper = styled.div`
 
 const AddressBarInput = styled.input`
   width: 45vw;
-  height: 35px;
+  height: 30px;
   border: none !important;
+  box-shadow: none !important;
 
   &:focus {
     outline: none !important;
