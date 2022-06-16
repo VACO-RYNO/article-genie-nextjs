@@ -76,7 +76,7 @@ allTagsList.forEach(tagList => {
   showHighlightsOnMousemove(tagList);
 });
 
-window.genieModeLinkButton?.addEventListener("click", async () => {
+genieModeLinkButton?.addEventListener("click", async () => {
   const genieId = genieTag.getAttribute("genie-id");
 
   try {
