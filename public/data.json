@@ -44,9 +44,9 @@
     },
     {
       "theme": "Tech",
-      "name": "Express",
-      "originUrl": "https://expressjs.com/ko/4x/api.html#app",
-      "logoUrl": "https://symbols.getvecta.com/stencil_79/88_expressjs-icon.54bb6035d3.jpg"
+      "name": "Recoil",
+      "originUrl": "https://recoiljs.org/ko/docs/guides/asynchronous-data-queries",
+      "logoUrl": "https://recoiljs.org/ko/img/favicon.png"
     },
     {
       "theme": "Journal",

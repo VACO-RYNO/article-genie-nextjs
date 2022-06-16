@@ -2,6 +2,12 @@ body {
   padding-top: 67px;
 }
 
+p {
+  clear: both;
+  margin-bottom: 1em;
+  margin-top: 0;
+}
+
 .element-click {
   background-color: #aaabff;
   border-radius: 5px;
