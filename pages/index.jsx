@@ -21,7 +21,7 @@ export default function MainPage() {
   return (
     <>
       <Head>
-        <title>Main</title>
+        <title>ArticleGenie</title>
         <meta name="description" content="article genie main page" />
         <link rel="icon" href="/favicon.ico" />
       </Head>

@@ -9,6 +9,7 @@ import sideBarState from "../../lib/recoil/sideBar";
 import { getArticleList } from "../../lib/api";
 import MyArticleListEntry from "../../components/MyArticleListEntry";
 import currentArticleIdState from "../../lib/recoil/currentArticleId";
+import Head from "next/head";
 
 export default function MyArticlePage() {
   const [currentUserArticles, setCurrentUserArticles] = useState([]);
@@ -30,25 +31,31 @@ export default function MyArticlePage() {
   }, [userId, getArticleList]);
 
   return (
-    <MyArticlesWrapper>
-      {currentUserArticles?.map(article => (
-        <MyArticleEntryWrapper>
-          <MyArticleListEntry
-            key={article._id}
-            articleId={article._id}
-            title={article.title}
-            contents={article.contents}
-            ogImgSrc={article.lastVisitedSiteOgImgSrc}
-            onClick={() => {
-              setCurrentArticleId(article._id);
-              setIsSideBarOpen(true);
-              window.location.href = `/genie-mode?url=${article.lastVisitedSiteUrl}`;
-            }}
-            handleUserArticles={setCurrentUserArticles}
-          />
-        </MyArticleEntryWrapper>
-      ))}
-    </MyArticlesWrapper>
+    <>
+      <Head>
+        <title>ArticleGenie</title>
+        <meta name="description" content="article genie main page" />
+      </Head>
+      <MyArticlesWrapper>
+        {currentUserArticles?.map(article => (
+          <MyArticleEntryWrapper>
+            <MyArticleListEntry
+              key={article._id}
+              articleId={article._id}
+              title={article.title}
+              contents={article.contents}
+              ogImgSrc={article.lastVisitedSiteOgImgSrc}
+              onClick={() => {
+                setCurrentArticleId(article._id);
+                setIsSideBarOpen(true);
+                window.location.href = `/genie-mode?url=${article.lastVisitedSiteUrl}`;
+              }}
+              handleUserArticles={setCurrentUserArticles}
+            />
+          </MyArticleEntryWrapper>
+        ))}
+      </MyArticlesWrapper>
+    </>
   );
 }
 
