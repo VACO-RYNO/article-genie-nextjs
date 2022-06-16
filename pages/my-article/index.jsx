@@ -10,11 +10,10 @@ import { getArticleList } from "../../lib/api";
 import MyArticleListEntry from "../../components/MyArticleListEntry";
 import currentArticleIdState from "../../lib/recoil/currentArticleId";
 import Head from "next/head";
+import { setCookies } from "cookies-next";
 
 export default function MyArticlePage() {
   const [currentUserArticles, setCurrentUserArticles] = useState([]);
-  const setIsSideBarOpen = useSetRecoilState(sideBarState);
-  const setCurrentArticleId = useSetRecoilState(currentArticleIdState);
   const loginData = useRecoilValue(loginState);
   const userId = loginData?.data._id;
 
@@ -46,8 +45,7 @@ export default function MyArticlePage() {
               contents={article.contents}
               ogImgSrc={article.lastVisitedSiteOgImgSrc}
               onClick={() => {
-                setCurrentArticleId(article._id);
-                setIsSideBarOpen(true);
+                setCookies("currentArticleId", article._id);
                 window.location.href = `/genie-mode?url=${article.lastVisitedSiteUrl}`;
               }}
               handleUserArticles={setCurrentUserArticles}

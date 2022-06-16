@@ -53,7 +53,6 @@ function MyArticlesList() {
 
   return (
     <ListWrapper>
-      <ListTitle>마이 아티클</ListTitle>
       <MyArticlesWrapper>
         <NewArticleButton onClick={handleNewArticleButtonClick}>
           <AddIcon />
@@ -107,7 +106,7 @@ const NewArticleButton = styled.div`
   margin: 1rem;
   display: flex;
   flex-direction: column;
-  width: 20rem;
+  width: 320px;
   height: 330px;
   border-radius: 4px;
   align-items: center;
