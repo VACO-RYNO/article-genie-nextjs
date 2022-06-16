@@ -40,8 +40,15 @@ function GenieSideBar() {
 
           delete articleData._id;
 
+          const ogImgSrc = document.querySelector(
+            `meta[property="og:image"]`,
+          ).content;
+
           await updateArticle(userId, currentArticleId, articleData);
-          await updateLastVisitedSite(userId, currentArticleId, originUrl);
+          await updateLastVisitedSite(userId, currentArticleId, {
+            originUrl,
+            ogImgSrc,
+          });
         }
       } catch {
         showModal({
@@ -73,7 +80,7 @@ function GenieSideBar() {
         } else if (currentArticleId) {
           setArticleData(data => {
             const sideEditor = document.getElementById("side-editor");
-
+            console.log(sideEditor.innerHTML);
             data.contents = sideEditor.innerHTML;
 
             return data;
@@ -81,8 +88,15 @@ function GenieSideBar() {
 
           delete articleData._id;
 
+          const ogImgSrc = document.querySelector(
+            `meta[property="og:image"]`,
+          ).content;
+
           await updateArticle(userId, currentArticleId, articleData);
-          await updateLastVisitedSite(userId, currentArticleId, originUrl);
+          await updateLastVisitedSite(userId, currentArticleId, {
+            originUrl,
+            ogImgSrc,
+          });
         }
       } catch {
         showModal({

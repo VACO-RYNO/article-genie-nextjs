@@ -30,26 +30,29 @@ export default function MyArticlePage() {
   }, [userId, getArticleList]);
 
   return (
-    <MyArticlesWrapepr>
+    <MyArticlesWrapper>
       {currentUserArticles?.map(article => (
         <MyArticleEntryWrapper>
           <MyArticleListEntry
             key={article._id}
+            articleId={article._id}
             title={article.title}
             contents={article.contents}
+            ogImgSrc={article.lastVisitedSiteOgImgSrc}
             onClick={() => {
               setCurrentArticleId(article._id);
               setIsSideBarOpen(true);
-              router.push(`/genie-mode?url=${article.lastVisitedSiteUrl}`);
+              window.location.href = `/genie-mode?url=${article.lastVisitedSiteUrl}`;
             }}
+            handleUserArticles={setCurrentUserArticles}
           />
         </MyArticleEntryWrapper>
       ))}
-    </MyArticlesWrapepr>
+    </MyArticlesWrapper>
   );
 }
 
-const MyArticlesWrapepr = styled.div`
+const MyArticlesWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-auto-rows: minmax(280px, auto);
@@ -59,15 +62,4 @@ const MyArticlesWrapepr = styled.div`
   margin-left: auto;
 `;
 
-const MyArticleEntryWrapper = styled.div`
-  min-width: 180px;
-  min-height: 160px;
-  margin: 30px;
-  border-radius: 4px;
-  box-shadow: 0 6px 10px 0 rgb(0 0 0 / 8%), 0 0 2px 0 rgb(0 0 0 / 15%);
-  overflow: hidden;
-
-  :hover {
-    background-color: #a5e9ff;
-  }
-`;
+const MyArticleEntryWrapper = styled.div``;
