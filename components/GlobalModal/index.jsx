@@ -9,6 +9,8 @@ import Profile from "../Profile";
 import MyArticlesModal from "../MyArticlesModal";
 import MyArticlesList from "../MyArticlesList";
 import ErrorModal from "../ErrorModal";
+import { Suspense } from "react";
+import Loading from "../Loading";
 
 function GlobalModal() {
   const { modalType, modalProps } = useRecoilValue(modalState) || {};
@@ -28,9 +30,11 @@ function GlobalModal() {
       );
     case "MyArticlesModal":
       return (
-        <MyArticlesModal>
-          <MyArticlesList />
-        </MyArticlesModal>
+        <Suspense fallback={<Loading />}>
+          <MyArticlesModal>
+            <MyArticlesList />
+          </MyArticlesModal>
+        </Suspense>
       );
     case "ConfirmModal":
       return <ConfirmModal>{modalProps.message}</ConfirmModal>;
