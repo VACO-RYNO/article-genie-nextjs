@@ -10,6 +10,7 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import GlobalStyle from "../components/shared/GlobalStyle";
 import ErrorModal from "../components/ErrorModal";
+import Loading from "../components/Loading";
 
 function MyApp({ Component, pageProps }) {
   const queryClient = new QueryClient({
@@ -24,7 +25,7 @@ function MyApp({ Component, pageProps }) {
     <>
       <RecoilRoot>
         <QueryClientProvider client={queryClient}>
-          <Suspense fallback={<h1>Loading...</h1>}>
+          <Suspense fallback={<Loading />}>
             <ErrorBoundary
               fallbackRender={({ error }) =>
                 process.env.NODE_ENV === "development" ? (
