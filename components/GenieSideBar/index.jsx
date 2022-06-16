@@ -38,6 +38,10 @@ function GenieSideBar() {
 
             data.contents = sideEditor.innerHTML;
 
+            if (!data.title) {
+              data.title = "제목없음";
+            }
+
             return data;
           });
 
@@ -91,6 +95,10 @@ function GenieSideBar() {
             const ogImgSrc = document.querySelector(
               `meta[property="og:image"]`,
             ).content;
+
+            if (!data.title) {
+              data.title = "제목없음";
+            }
 
             await updateArticle(userId, currentArticleId, data);
             await updateLastVisitedSite(userId, currentArticleId, {
