@@ -94,7 +94,6 @@ const Header = styled.div`
   box-sizing: border-box;
   background-color: white;
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
-  opacity: 0.8;
   height: 67px;
   width: 100%;
   transition: margin-top 0.5s ease 0s;
@@ -113,7 +112,7 @@ const InnerHeader = styled.div`
   align-items: center;
   height: 100%;
   width: 100%;
-  @media (min-width: 1028px) {
+  @media (min-width: 1024px) {
     margin-left: 11%;
     margin-right: 11%;
   }
@@ -161,8 +160,9 @@ const AddressBarWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 100%;
-  width: 90%;
+  width: 93%;
   padding-right: 2%;
+  padding-left: 2%;
 `;
 
 const ProfileIcon = styled(BsPersonCircle)`
@@ -182,6 +182,7 @@ const ShareIcon = styled(BsShareFill)`
   height: 28px;
   color: #bcbcbc;
   cursor: pointer;
+  margin-left: 1%;
 
   :hover {
     color: #6466ff;

@@ -154,7 +154,7 @@ function GenieSideBar() {
 const SideBar = styled.div`
   display: flex;
   position: sticky;
-  ${props => (props.sideBar ? "flex: 0 1 40%;" : "flex: 0 1 0%;")}
+  flex: ${props => (props.sideBar ? "0 1 40%" : "0 1 0%")};
   top: 67px;
   height: calc(100vh - 67px);
   overflow: hidden scroll;
