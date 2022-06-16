@@ -61,7 +61,7 @@ function GenieSideBar() {
           },
         });
       }
-    }, 3000);
+    }, 20000);
 
     return () => {
       clearInterval(interval);
@@ -81,24 +81,24 @@ function GenieSideBar() {
           setArticleData(data);
           setIsFetchDone(true);
         } else if (currentArticleId) {
-          setArticleData(data => {
+          setArticleData(async data => {
             const sideEditor = document.getElementById("side-editor");
 
             data.contents = sideEditor.innerHTML;
 
+            delete data._id;
+
+            const ogImgSrc = document.querySelector(
+              `meta[property="og:image"]`,
+            ).content;
+
+            await updateArticle(userId, currentArticleId, data);
+            await updateLastVisitedSite(userId, currentArticleId, {
+              originUrl,
+              ogImgSrc,
+            });
+
             return data;
-          });
-
-          delete articleData._id;
-
-          const ogImgSrc = document.querySelector(
-            `meta[property="og:image"]`,
-          ).content;
-
-          await updateArticle(userId, currentArticleId, articleData);
-          await updateLastVisitedSite(userId, currentArticleId, {
-            originUrl,
-            ogImgSrc,
           });
         }
       } catch {
@@ -160,7 +160,7 @@ const SideBar = styled.div`
     border: none;
     padding: 50px;
     outline: none;
-    font-size: 1.3em;
+    font-size: 17px;
   }
 
   &:empty:before {
@@ -176,7 +176,7 @@ const TitleInput = styled.input`
   border: 0;
   padding: 0;
   outline: none;
-  font-size: 2em;
+  font-size: 27px;
   color: #6466ff;
 `;
 
@@ -191,7 +191,7 @@ const ExportButton = styled(BsFillFileEarmarkPdfFill)`
   width: 30px;
   height: 30px;
   margin-top: 50px;
-  margin-left: 570px;
+  margin-left: 50px;
   color: #bcbcbc;
   cursor: pointer;
 `;
