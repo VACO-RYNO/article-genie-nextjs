@@ -136,7 +136,7 @@ const GeniePageWrapper = styled.div`
 `;
 
 const MainWrapper = styled.div`
-  ${props => (props.sideBar ? "flex: 0 1 60%;" : "flex: 0 1 100%;")}
+  flex: ${props => (props.sideBar ? "0 1 60%" : "0 100%")};
   transition: all 200ms ease-in 0s;
 `;
 

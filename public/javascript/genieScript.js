@@ -76,7 +76,7 @@ allTagsList.forEach(tagList => {
   showHighlightsOnMousemove(tagList);
 });
 
-genieModeLinkButton?.addEventListener("click", async () => {
+window.genieModeLinkButton?.addEventListener("click", async () => {
   const genieId = genieTag.getAttribute("genie-id");
 
   try {
@@ -96,14 +96,37 @@ genieModeMemoButton?.addEventListener("click", async () => {
   const copiedGenieTag = genieTag.cloneNode(true);
   const br = document.createElement("br");
 
+  const locationSearch = `${window.location.search}`;
+  const source = locationSearch.slice(`?url=`.length);
+  const sourceDomain = decodeURI(decodeURIComponent(source))
+    .slice(`https://`.length)
+    .split("/")
+    .shift();
+
   copiedGenieTag.appendChild(br);
   copiedGenieTag.classList.remove("hide");
   sideEditor.innerHTML += `
     <div
+      id="side-editor-preview"
+      style="position: relative;"
       onclick="location.href='${window.location.origin}${window.location.pathname}${window.location.search}#genie-id-${genieId}'"
-      onmouseover="this.classList.add('highlight')";
-      onmouseout="this.classList.remove('highlight')";
+      onmouseover="
+        this.classList.add('highlight');
+        this.children[0].classList.remove('hide');
+        this.children[0].classList.add('show');
+      "
+      onmouseout="
+        this.classList.remove('highlight');
+        this.children[0].classList.remove('show');
+        this.children[0].classList.add('hide');
+      ";
     >
+      <span
+        id="genie-url-preview-modal"
+        class="hide"
+      >
+        ${sourceDomain}
+      </span>
       ${copiedGenieTag.outerHTML}
     </div>
   `;
