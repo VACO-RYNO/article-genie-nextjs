@@ -34,6 +34,7 @@ function GenieSideBar() {
             const sideEditor = document.getElementById("side-editor");
 
             data.contents = sideEditor.innerHTML;
+
             return data;
           });
 
@@ -74,6 +75,7 @@ function GenieSideBar() {
             const sideEditor = document.getElementById("side-editor");
 
             data.contents = sideEditor.innerHTML;
+
             return data;
           });
 
