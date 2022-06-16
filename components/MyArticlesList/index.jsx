@@ -35,8 +35,9 @@ function MyArticlesList() {
     };
 
     try {
-      await createArticle(userId, initialForm);
+      const { data } = await createArticle(userId, initialForm);
 
+      setCurrentArticleId(data._id);
       hideModal();
       setIsSideBarOpen(true);
     } catch {

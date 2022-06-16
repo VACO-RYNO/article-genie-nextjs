@@ -100,7 +100,7 @@ function GenieSideBar() {
       {isFetchDone && (
         <TitleInput
           name="article-title"
-          placeholder="아티클 제목"
+          placeholder="제목을 입력하세요."
           defaultValue={articleData.title}
           onChange={e => {
             setArticleData(data => {
@@ -113,6 +113,7 @@ function GenieSideBar() {
       <div
         id="side-editor"
         contentEditable="true"
+        placeholder="내용을 입력하세요."
         dangerouslySetInnerHTML={{ __html: articleData.contents }}
       ></div>
     </SideBar>
@@ -120,25 +121,40 @@ function GenieSideBar() {
 }
 
 const SideBar = styled.div`
-  transition: all 200ms ease-in 0s;
+  display: flex;
   position: sticky;
-  ${props => (props.sideBar ? "flex: 0 0 40%;" : "flex: 0 0 0px;")}
+  ${props => (props.sideBar ? "flex: 0 1 40%;" : "flex: 0 1 0%;")}
   top: 67px;
   height: calc(100vh - 67px);
   overflow: hidden scroll;
   overflow-y: scroll;
-  display: flex;
   flex-direction: column;
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: white;
+  transition: all 200ms ease-in 0s;
+  box-shadow: 0 6px 10px 0 rgb(0 0 0 / 8%), 0 0 2px 0 rgb(0 0 0 / 15%);
+
   #side-editor {
-    height: 100%;
     border: none;
-    padding: 2rem;
+    padding: 50px;
+    outline: none;
+    font-size: 1.3em;
+  }
+
+  &:empty:before {
+    content: attr(placeholder);
+    color: grey;
   }
 `;
 
 const TitleInput = styled.input`
-  height: 40px;
+  width: 400px;
+  margin-top: 60px;
+  margin-left: 50px;
+  border: 0;
+  padding: 0;
+  outline: none;
+  font-size: 2em;
+  color: #6466ff;
 `;
 
 export default GenieSideBar;
