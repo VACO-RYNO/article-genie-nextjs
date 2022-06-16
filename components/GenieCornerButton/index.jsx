@@ -1,18 +1,24 @@
+import { useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
+import { IoAdd } from "react-icons/io5";
 
 import useModal from "../../lib/hooks/useModal";
 import sideBarState from "../../lib/recoil/sideBar";
 import { isLoginState } from "../../lib/recoil/auth";
+import modalState from "../../lib/recoil/modal";
 import { removeCookies } from "cookies-next";
 
 function GenieCornerButton() {
   const [isSideBarOpen, setIsSideBarOpen] = useRecoilState(sideBarState);
+  const [isActive, setIsActive] = useState(false);
   const isLogin = useRecoilValue(isLoginState);
+  const modalData = useRecoilValue(modalState);
+  const { showModal, hideModal } = useModal();
 
-  const { showModal } = useModal();
+  const handleClick = () => {
+    setIsActive(current => !current);
 
-  const handleNewArticleClick = () => {
     if (!isLogin) {
       return showModal({
         modalType: "LoginModal",
@@ -24,6 +30,10 @@ function GenieCornerButton() {
       return removeCookies("currentArticleId");
     }
 
+    if (modalData?.modalType === "MyArticlesModal") {
+      return hideModal();
+    }
+
     return showModal({
       modalType: "MyArticlesModal",
     });
@@ -31,11 +41,9 @@ function GenieCornerButton() {
 
   return (
     <Wrapper>
-      {isSideBarOpen ? (
-        <CornerButton onClick={handleNewArticleClick}>&#10006;</CornerButton>
-      ) : (
-        <CornerButton onClick={handleNewArticleClick}>&#43;</CornerButton>
-      )}
+      <CornerButton onClick={handleClick}>
+        <AddIcon isActive={isActive} />
+      </CornerButton>
     </Wrapper>
   );
 }
@@ -66,6 +74,12 @@ const CornerButton = styled.div`
   :hover {
     border: solid 3px #fc7ebe;
   }
+`;
+
+const AddIcon = styled(IoAdd)`
+  width: 40px;
+  height: 40px;
+  ${props => (props.isActive ? "transform: rotate(45deg);" : "null;")}
 `;
 
 export default GenieCornerButton;
