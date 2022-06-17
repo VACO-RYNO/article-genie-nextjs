@@ -112,22 +112,22 @@ genieModeMemoButton?.addEventListener("click", async () => {
       onclick="location.href='${window.location.origin}${window.location.pathname}${window.location.search}#genie-id-${genieId}'"
       onmouseover="
         this.classList.add('highlight');
-        this.children[0].classList.remove('hide');
-        this.children[0].classList.add('show');
+        this.children[1].classList.remove('hide');
+        this.children[1].classList.add('show');
       "
       onmouseout="
         this.classList.remove('highlight');
-        this.children[0].classList.remove('show');
-        this.children[0].classList.add('hide');
+        this.children[1].classList.remove('show');
+        this.children[1].classList.add('hide');
       ";
     >
+      ${copiedGenieTag.outerHTML}
       <span
         id="genie-url-preview-modal"
         class="hide"
       >
         ${sourceDomain}
       </span>
-      ${copiedGenieTag.outerHTML}
     </div>
   `;
 
