@@ -17,7 +17,9 @@ import {
 import useModal from "../../lib/hooks/useModal";
 
 function GenieSideBar() {
-  const componentRef = useRef();
+  const printAreaRef = useRef();
+  const editorRef = useRef();
+  const titleInputRef = useRef();
   const loginData = useRecoilValue(loginState);
   const isSideBarOpen = useRecoilValue(sideBarState);
   const currentArticleId = useRecoilValue(currentArticleIdState);
@@ -31,12 +33,20 @@ function GenieSideBar() {
       try {
         if (isSideBarOpen && currentArticleId) {
           const userId = loginData?.data._id;
+          const sideEditor = editorRef.current;
+          const titleInput = titleInputRef.current;
 
           setCookies("currentArticleId", currentArticleId);
-          setArticleData(data => {
-            const sideEditor = document.getElementById("side-editor");
 
+          if (
+            articleData.title === titleInput.value &&
+            articleData.contents === sideEditor.innerHTML
+          ) {
+            return;
+          }
+          setArticleData(data => {
             data.contents = sideEditor.innerHTML;
+            data.title = titleInput.value;
 
             if (!data.title) {
               data.title = "제목없음";
@@ -65,7 +75,7 @@ function GenieSideBar() {
           },
         });
       }
-    }, 2000);
+    }, 500);
 
     return () => {
       clearInterval(interval);
@@ -86,9 +96,11 @@ function GenieSideBar() {
           setIsFetchDone(true);
         } else if (currentArticleId) {
           setArticleData(async data => {
-            const sideEditor = document.getElementById("side-editor");
+            const sideEditor = editorRef.current;
+            const titleInput = titleInputRef.current;
 
             data.contents = sideEditor.innerHTML;
+            data.title = titleInput.value;
 
             delete data._id;
 
@@ -124,25 +136,21 @@ function GenieSideBar() {
     <SideBar sideBar={isSideBarOpen}>
       <ReactToPrint
         trigger={() => <ExportButton />}
-        content={() => componentRef.current}
+        content={() => printAreaRef.current}
       />
-      <PrintArea ref={componentRef}>
+      <PrintArea ref={printAreaRef}>
         {isFetchDone && (
           <TitleInput
+            ref={titleInputRef}
             name="article-title"
             placeholder="제목을 입력하세요."
             defaultValue={articleData.title}
-            onChange={e => {
-              setArticleData(data => {
-                data.title = e.target.value;
-                return data;
-              });
-            }}
           />
         )}
         <ViewGap />
         <div
           id="side-editor"
+          ref={editorRef}
           contentEditable="true"
           placeholder="내용을 입력하세요."
           dangerouslySetInnerHTML={{ __html: articleData.contents }}
@@ -170,11 +178,11 @@ const SideBar = styled.div`
     padding: 50px;
     outline: none;
     font-size: 17px;
-  }
 
-  &:empty:before {
-    content: attr(placeholder);
-    color: grey;
+    &:empty:before {
+      content: attr(placeholder);
+      color: grey;
+    }
   }
 `;
 
