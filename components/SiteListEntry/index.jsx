@@ -13,7 +13,6 @@ function SiteListEntry({ name, originUrl, logoUrl }) {
     <EntryWrapper onClick={handleSubmit}>
       <SiteLogo src={logoUrl}></SiteLogo>
       <SiteName>{name}</SiteName>
-      {/* <p>{originUrl}</p> */}
     </EntryWrapper>
   );
 }

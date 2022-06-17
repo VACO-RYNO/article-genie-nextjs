@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
+import Image from "next/image";
 
 import styled from "styled-components";
 import { BsPersonCircle, BsShareFill } from "react-icons/bs";
@@ -52,10 +53,12 @@ function AppHeader() {
           <Link href="/">
             <a>
               <Brand>
-                <BrandLogo
+                <Image
                   className="brand-image"
                   src={"/images/genie-logo.png"}
                   alt="brand-logo"
+                  width={400}
+                  height={300}
                 />
               </Brand>
             </a>
