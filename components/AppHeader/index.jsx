@@ -1,12 +1,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 
 import styled from "styled-components";
-import Heading from "../shared/Heading";
-import logo from "../../public/images/genie-logo.png";
 import { BsPersonCircle, BsShareFill } from "react-icons/bs";
 
 import useModal from "../../lib/hooks/useModal";
@@ -55,14 +52,11 @@ function AppHeader() {
           <Link href="/">
             <a>
               <Brand>
-                <Image
+                <BrandLogo
                   className="brand-image"
-                  src={logo}
+                  src={"/images/genie-logo.png"}
                   alt="brand-logo"
-                  width={60}
-                  height={41}
-                ></Image>
-                <Heading>Genie.</Heading>
+                />
               </Brand>
             </a>
           </Link>
@@ -113,8 +107,8 @@ const InnerHeader = styled.div`
   height: 100%;
   width: 100%;
   @media (min-width: 1024px) {
-    margin-left: 11%;
-    margin-right: 11%;
+    margin-left: 10%;
+    margin-right: 10%;
   }
   margin-left: 2%;
   margin-right: 2%;
@@ -144,14 +138,11 @@ const Brand = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  width: 100%;
+  width: 100px;
+`;
 
-  .brand-image {
-    @media (max-width: 1024px) {
-      visibility: hidden;
-    }
-  }
+const BrandLogo = styled.img`
+  width: 100%;
 `;
 
 const AddressBarWrapper = styled.div`

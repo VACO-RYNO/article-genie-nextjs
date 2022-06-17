@@ -9,7 +9,7 @@ function UserSiteListEntry({ url }) {
       <Span>
         <FaviconImg
           src={`https://${sourceDomain}/favicon.ico`}
-          onError={e => (e.target.src = "/images/genie-logo.png")}
+          onError={e => (e.target.src = "/images/genie-favicon.png")}
         />
       </Span>
       <TitleWrapper>

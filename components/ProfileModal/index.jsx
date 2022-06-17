@@ -29,13 +29,11 @@ const ModalOverlay = styled.div`
 const ModalContainer = styled.div`
   position: absolute;
   padding: 10px 25px;
-  @media (min-width: 1024px) {
+  @media screen and (min-width: 1024px) {
     right: 8%;
   }
   right: -5%;
   top: 14.5%;
-  width: 200px;
-  height: 35px;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
