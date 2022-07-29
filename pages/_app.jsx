@@ -11,6 +11,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import GlobalStyle from "../components/shared/GlobalStyle";
 import ErrorModal from "../components/ErrorModal";
 import Loading from "../components/Loading";
+import MobileDefense from "../components/MobileDefense";
 
 function MyApp({ Component, pageProps }) {
   const queryClient = new QueryClient({
@@ -37,6 +38,7 @@ function MyApp({ Component, pageProps }) {
             >
               <GlobalStyle />
               <GlobalModal />
+              <MobileDefense />
               <AppHeader />
               <Main>
                 <Container>
@@ -56,6 +58,10 @@ MyApp.propTypes = {
   pageProps: PropTypes.object,
 };
 
-const Main = styled.main``;
+const Main = styled.main`
+  @media only screen and (max-width: 767px) {
+    display: none;
+  }
+`;
 
 export default MyApp;
